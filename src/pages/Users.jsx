@@ -15,12 +15,10 @@ import {
   Button
 } from '@windmill/react-ui'
 
-import { Link } from 'react-router-dom'
 import "firebase/database";
 import { db } from '../firebase'
 import { onValue, ref, orderByKey, query,remove } from 'firebase/database';
 // img
-import u from '../../src/assets/img/user.png'
 import { EditIcon, TrashIcon } from '../icons'
 import { BsFillEyeFill } from "@react-icons/all-files/bs/BsFillEyeFill";
 
@@ -57,7 +55,6 @@ const Users = ({ handel_users_selection,handleDelete }) => {
   }
 
   useEffect(() => {
-
     fetchUser();
   }, []);
 
@@ -84,7 +81,7 @@ const Users = ({ handel_users_selection,handleDelete }) => {
                 <TableCell>
                   <div className="flex items-center text-sm">
                     {/* <Avatar className="hidden mr-3 md:block" src={user.name} alt="User image" /> */}
-                    <img className='h-10  w-10 mr-2' src={u} alt="" />
+                    <img className='h-10  w-10 mr-2' src={user.image_url} alt="" />
                     <div>
                       <p className="font-semibold">{user.user_name}</p>
                       <p className="text-xs text-gray-600 dark:text-gray-400">{user.user_email}</p>
@@ -100,20 +97,16 @@ const Users = ({ handel_users_selection,handleDelete }) => {
                 <TableCell>
                   <span className="text-sm">{user.user_email}</span>
                 </TableCell>
-
                 <TableCell>
-                
                     <Button layout="link" size="icon" aria-label="eye">
                       <BsFillEyeFill className="w-5 h-5 mx-3" aria-hidden="true" onClick={() => handel_users_selection(user, user.firebase_id,3)} />
                     </Button>
-               
-                  <Button layout="link" size="icon" aria-label="Edit" onClick={() => handel_users_selection(user, user.firebase_id,2)} >
+                  <Button layout="link"  size="icon" aria-label="Edit" onClick={() => handel_users_selection(user, user.firebase_id,2)} >
                     <EditIcon className="w-5 h-5 mx-3" aria-hidden="true" />
                   </Button>
                   <Button layout="link" size="icon" aria-label="Delete" onClick={() =>  handleDelete(user.firebase_id)}>
                     <TrashIcon className="w-5 h-5 mx-3" aria-hidden="true" />
                   </Button>
-
                 </TableCell>
               </TableRow>
             ))}

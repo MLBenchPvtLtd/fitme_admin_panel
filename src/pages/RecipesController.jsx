@@ -2,7 +2,6 @@ import { id_ID } from 'faker/lib/locales';
 import React, { useState } from 'react'
 import RecipesListController from './RecipesListController';
 import Recipies from './Recipies'
-import Recipieslist from './Recipieslist'
 
 const RecipesController = () => {
 

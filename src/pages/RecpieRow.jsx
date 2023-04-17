@@ -24,21 +24,10 @@ import "firebase/database";
 import { onValue, ref,  set, query, update, } from 'firebase/database';
 
 const RecpieRow = ({ recipe, kiey, handel_recipe_selection,selected_recipe,selected_user_id,recipie_key,handleDelete }) => {
-  // useEffect(() => {
-  //   console.log(kiey,"keyid")
-  // }, []);
 
- 
- //delete
-//  const handleDelete = () => {
-//   remove(ref(db, `/recipes/${selected_user_id}/${recipie_key}`),);
-//   // console.log(selected_user_id,'selected_user_id')
-// };
 
   return (
     <>
-
-
 
 
       <div className="border w-12/12 rounded-lg ...  my-5">
@@ -55,7 +44,7 @@ const RecpieRow = ({ recipe, kiey, handel_recipe_selection,selected_recipe,selec
                   <div className="flex items-center text-sm">
                     {/* <Avatar className="hidden mr-3 md:block" src={user.avatar} alt="User avatar" /> */}
 
-                    <img className='h-10  w-10 mr-2' src={u} alt="" />
+                    <img className='h-10  w-10 mr-2' src={recipe.image_url} alt="" />
                     <div>
                       <p className="font-semibold">{recipe.name}</p>
                       <p className="text-xs text-gray-600 dark:text-gray-400 w-64 truncate ">{recipe.details}</p>
@@ -97,12 +86,13 @@ const RecpieRow = ({ recipe, kiey, handel_recipe_selection,selected_recipe,selec
           </Table>
           <div className="py-5">
 
-            <div class="grid grid-cols-1  lg:grid-cols-4 auto-rows-max  ">
+            <div className="grid grid-cols-1  lg:grid-cols-4 auto-rows-max  ">
 
 
-              <div class="col-span-3 ...">
+              <div className="col-span-3 ...">
                 <div className="px-5">
-                  <h1 className="px-5 py-5 font-bold"> Difficulty : {recipe.make_difficulity}</h1>
+                <h1 className="px-5 py-2 font-bold"> User Name : {recipe.userName}</h1>
+                  <h1 className="px-5 py-3 font-bold"> Difficulty : {recipe.make_difficulity}</h1>
 
                   <p className="font-normal"> <span className="font-bold"> Description :</span>
                   {recipe.details}
@@ -111,12 +101,12 @@ const RecpieRow = ({ recipe, kiey, handel_recipe_selection,selected_recipe,selec
               </div>
 
               {/* colmen2 */}
-              <div class=" content-center">
-                <h1 class="font-bold text-2xl mb-5 mt-4"> Food Nutrients</h1>
-                <p className=" mb-3 font-semibold flex w-full ">  <p className="w-9/12 ">Calories</p> <p>{recipe.calories}%</p> </p>
-                <p className=" mb-3 font-semibold flex w-full ">  <p className="w-9/12 ">Protenis</p> <p>{recipe.protenis}%</p> </p>
-                <p className=" mb-3 font-semibold flex w-full ">  <p className="w-9/12 ">Fat</p> <p>{recipe.fat}%</p> </p>
-                <p className=" mb-3 font-semibold flex w-full ">  <p className="w-9/12 ">Carbohydrates</p> <p>{recipe.carbohydrates}%</p> </p>
+              <div className=" content-center">
+                <h1 className="font-bold text-2xl mb-5 mt-4"> Food Nutrients</h1>
+                <div className=" mb-3 font-semibold flex w-full ">  <p className="w-9/12 ">Calories</p> <p>{recipe.calories}%</p> </div>
+                <div className=" mb-3 font-semibold flex w-full ">  <p className="w-9/12 ">Protenis</p> <p>{recipe.protenis}%</p> </div>
+                <div className=" mb-3 font-semibold flex w-full ">  <p className="w-9/12 ">Fat</p> <p>{recipe.fat}%</p> </div>
+                <div className=" mb-3 font-semibold flex w-full ">  <p className="w-9/12 ">Carbohydrates</p> <p>{recipe.carbohydrates}%</p> </div>
               </div>
 
 

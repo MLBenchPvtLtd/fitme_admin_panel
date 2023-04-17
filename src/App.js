@@ -20,7 +20,7 @@ function App() {
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/recpierow" component={Test} />
           <Route path="/UserEdit" component={UserEdit} />
-          UserEdit
+         
           {/* Place new routes over this */}
           <Route path="/app" component={Layout} />
           {/* If you have an index page, you can remothis Redirect */}

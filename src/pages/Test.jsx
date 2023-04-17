@@ -1,9 +1,9 @@
 import React from "react"
 
-const Test = ({ test_var }) => {
+const Test = () => {
   return (
     <>
-      <p>{test_var}</p>
+      <p>hello</p>
 
     </>
 

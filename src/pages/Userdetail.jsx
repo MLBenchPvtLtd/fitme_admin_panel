@@ -47,10 +47,10 @@ const Userdetail = ({ selected_user_id_selection, selected_user_object_selection
         <>
             <div className=" py-5 items-end justify-end text-right w-11/12">
 
-                <button onClick={() => { handlecancel(1) }} class="text-white py-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                <button onClick={() => { handlecancel(1) }} className="text-white py-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                     Cancel
                 </button>
-                <button onClick={update_user} class="focus:outline-none py-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5  mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                <button onClick={update_user} className="focus:outline-none py-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5  mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
                     Update
                 </button>
             </div>
@@ -65,7 +65,6 @@ const Userdetail = ({ selected_user_id_selection, selected_user_object_selection
                             <p className="text-xs text-gray-600 dark:text-gray-400">{selected_user_object_edit.user_name}</p>
                         </div>
                     </div>
-                    
                 </div>
                 {/* row 1 */}
                 <div className="grid gap-5 grid-cols-1  lg:grid-cols-3 auto-rows-max ">
@@ -109,13 +108,13 @@ const Userdetail = ({ selected_user_id_selection, selected_user_object_selection
                     {/* col2 */}
                     <div className="">
                         <div className="mt-3  ">
-                            <label className="font-medium text-base" for=""> Phone</label>
+                            <label className="font-medium text-base" htmlFor=""> Phone</label>
 
                         </div>
-                   
+
                         <p>{selected_user_object_edit.phone}</p>
                         <div className="mt-4  ">
-                            <label className="font-medium text-base" for=""> Age</label>
+                            <label className="font-medium text-base" htmlFor=""> Age</label>
                         </div>
                         <p>{selected_user_object_edit.age}</p>
                         <h3 className="mt-6 font-medium text-2xl"> Food prefrences</h3>
@@ -140,7 +139,7 @@ const Userdetail = ({ selected_user_id_selection, selected_user_object_selection
 
                     {/* col2 */}
                     <div className="">
-                      
+
                     </div>
                 </div>
 

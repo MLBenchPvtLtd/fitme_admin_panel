@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, } from 'react-router-dom';
-
 import SectionTitle from '../components/Typography/SectionTitle'
-
 import {
   Table,
   TableHeader,
@@ -17,14 +14,10 @@ import {
   // Button,
   Pagination,
 } from '@windmill/react-ui'
-import { EditIcon, TrashIcon } from '../icons'
-
-
 import "firebase/database";
 import { db } from '../../src/firebase'
 import { onValue, ref, orderByKey, query } from 'firebase/database';
 // img
-import u from '../../src/assets/img/user.png'
 import response from '../utils/demo/tableData'
 
 // make a copy of the data, for the second table
@@ -38,33 +31,24 @@ function Recipies({ handel_user_selection }) {
    * component, like Table(?) and TableWithActions(?) hiding the
    * presentation details away from the page view.
    */
-
   const [users, setUsers] = useState([]);
-
-
-
   // setup pages control for every table
   const [pageTable1, setPageTable1] = useState(1)
   const [pageTable2, setPageTable2] = useState(1)
-
   // setup data for every table
   const [dataTable1, setDataTable1] = useState([])
   const [dataTable2, setDataTable2] = useState([])
-
   // pagination setup
   const resultsPerPage = 10
   const totalResults = response.length
-
   // pagination change control
   function onPageChangeTable1(p) {
     setPageTable1(p)
   }
-
   // pagination change control
   function onPageChangeTable2(p) {
     setPageTable2(p)
   }
-
   // on page change, load new sliced data
   // here you would make another server request for new data
   useEffect(() => {
@@ -78,12 +62,7 @@ function Recipies({ handel_user_selection }) {
   }, [pageTable2])
 
   // feyching dataa from fire base
-
-
   const fetchUser = () => {
-
-    
-
     var withdrawRef = query(ref(db, `/Users/`), orderByKey());
     onValue(withdrawRef, snapshot => {
       const data = snapshot.val();
@@ -95,26 +74,11 @@ function Recipies({ handel_user_selection }) {
         })
       }
     });
-
-
-
-
   }
-
   // recipie
-
-
-
   useEffect(() => {
-
     fetchUser();
- 
   }, []);
-
-
-
-
-
 
   return (
     <>
@@ -123,8 +87,6 @@ function Recipies({ handel_user_selection }) {
       <div>
         <Button primary onClick={() => parentToChild(1, "Ammar")}>Click Parent</Button>
       </div> */}
-
-
       <SectionTitle>Table with actions</SectionTitle>
       <TableContainer className="mb-8">
         <Table>
@@ -144,7 +106,7 @@ function Recipies({ handel_user_selection }) {
                   <div className="flex items-center text-sm">
                     {/* <Avatar className="hidden mr-3 md:block" src={user.avatar} alt="User avatar" /> */}
 
-                    <img className='h-10  w-10 mr-2' src={u} alt="" />
+                    <img className='h-10  w-10 mr-2' src={user.image_url} alt="" />
                     <div>
                       <p className="font-semibold ">{user.user_name}a</p>
                       <p className="text-xs text-gray-600 dark:text-gray-400">{user.user_email}</p>
@@ -168,7 +130,7 @@ function Recipies({ handel_user_selection }) {
                     {/* you just need to pass this id to new RecipiesList */}
 
 
-                    <button type="" layout="link" size="icon" aria-label="Edit" class="font-semibold text-xs" onClick={() => handel_user_selection(user.firebase_id)}>
+                    <button type="" layout="link" size="icon" aria-label="Edit" className="font-semibold text-xs" onClick={() => handel_user_selection(user.firebase_id)}>
                     View Recipes  </button>
 
                    

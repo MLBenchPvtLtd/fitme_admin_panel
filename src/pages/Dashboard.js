@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-
 import CTA from '../components/CTA'
 import InfoCard from '../components/Cards/InfoCard'
 import ChartCard from '../components/Chart/ChartCard'
@@ -9,18 +8,6 @@ import PageTitle from '../components/Typography/PageTitle'
 import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from '../icons'
 import RoundIcon from '../components/RoundIcon'
 import response from '../utils/demo/tableData'
-import {
-  TableBody,
-  TableContainer,
-  Table,
-  TableHeader,
-  TableCell,
-  TableRow,
-  TableFooter,
-  Avatar,
-  Badge,
-  Pagination,
-} from '@windmill/react-ui'
 // img
 import ingredients from '../../src/assets/img/Total ingredients.png'
 import Totalrecipies from '../../src/assets/img/Total recipies.png'
@@ -31,35 +18,72 @@ import {
   doughnutLegends,
   lineLegends,
 } from '../utils/demo/chartsData'
+import "firebase/database";
+import { db } from '../firebase'
+import { onValue, orderByKey, query, remove, set, ref, get, } from 'firebase/database';
+import { storage } from "../firebase";
 
 function Dashboard() {
   const [page, setPage] = useState(1)
   const [data, setData] = useState([])
-
+  const [userCount, setUserCount] = useState(0);
+  const [recipies_count, setRecipies] = useState(0);
+  const [shopping_count, set_shopping_count] = useState(0);
   // pagination setup
   const resultsPerPage = 10
   const totalResults = response.length
-
   // pagination change control
   function onPageChange(p) {
     setPage(p)
   }
-
-  
   // on page change, load new sliced data
   // here you would make another server request for new data
   useEffect(() => {
     setData(response.slice((page - 1) * resultsPerPage, page * resultsPerPage))
   }, [page])
+  // testing
+  const fetchUser = () => {
+    const usersRef = ref(db, '/Users/');
+    onValue(usersRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        if (data !== null) {
+          setUserCount(Object.values(data).length);
+        }
+      }
+    });
+    const recipesRef = ref(db, '/recipes/');
+    onValue(recipesRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        if (data !== null) {
+          setRecipies(Object.values(data).length);
+        }
+      }
+    });
+    const shoppingRef = ref(db, '/shopping_list/');
+    onValue(shoppingRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        if (data !== null) {
+          set_shopping_count(Object.values(data).length);
+        }
+      }
+    });
+   
+  }
+  useEffect(() => {
+    fetchUser();
+    console.log(userCount, "count")
+  }, []);
 
   return (
     <>
       <PageTitle>Dashboard</PageTitle>
 
-   
-     {/* <!-- Cards --> */}
-     <div className="grid gap-6 mb-8 mt-8 md:grid-cols-2 xl:grid-cols-4">
-        <InfoCard title="Total users" value="6389">
+      {/* <!-- Cards --> */}
+      <div className="grid gap-6 mb-8 mt-8 md:grid-cols-2 xl:grid-cols-4">
+        <InfoCard title="Total users" value={userCount}>
           <RoundIcon
             icon={PeopleIcon}
             iconColorClass="text-orange-500 dark:text-orange-100"
@@ -68,16 +92,15 @@ function Dashboard() {
           />
         </InfoCard>
 
-        <InfoCard title="Total recipies" value="$ 46,760.89">
+        <InfoCard title="Total recipies" value={recipies_count}>
           <img className="mr-3" src={Totalrecipies} alt="" />
-
+        </InfoCard>
+        
+        <InfoCard title="Total shoppinglists" value={shopping_count}>
+          <img className="mr-3" src={Totalrecipies} alt="" />
         </InfoCard>
 
-        <InfoCard title="Total ingredients" value="376">
-          <img className="mr-3" src={ingredients} alt="" />
-        </InfoCard>
-
-        <InfoCard title="Total nutrients" value="35">
+        <InfoCard title="Total Admin Recipies" value="35">
           <img className="mr-3" src={Totalnutrients} alt="" />
         </InfoCard>
       </div>
@@ -126,7 +149,6 @@ function Dashboard() {
           />
         </TableFooter>
       </TableContainer> */}
-
       <PageTitle>Charts</PageTitle>
       <div className="grid gap-6 mb-8 md:grid-cols-2">
         <ChartCard title="Revenue">
@@ -139,6 +161,8 @@ function Dashboard() {
           <ChartLegend legends={lineLegends} />
         </ChartCard>
       </div>
+      {/* testing */}
+
     </>
   )
 }
