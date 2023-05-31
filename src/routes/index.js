@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import RecipesController from '../pages/RecipesController'
+import RecipesListController from '../pages/RecipesListController'
 import UsersController from '../pages/UsersController'
 import UserEdit from '../pages/UserEdit'
 import UserdetailController from '../pages/UserdetailController'
@@ -9,6 +9,9 @@ const Dashboard = lazy(() => import('../pages/Dashboard'))
 const users = lazy(() => import('../pages/Users'))
 const Recipies = lazy(() => import('../pages/Recipies'))
 const Addrecipies = lazy(() => import('../pages/Addrecipies'))
+
+const Ingredients = lazy(() => import('../pages/Ingredients'))
+const Prefrences = lazy(() => import('../pages/Prefrences'))
 const Recipieslist = lazy(() => import('../pages/Recipieslist'))
 const Userdetail = lazy(() => import('../pages/Userdetail'))
 const Charts = lazy(() => import('../pages/Charts'))
@@ -44,7 +47,7 @@ const routes = [
   },
   {
     path: '/Recipies',
-    component: RecipesController,
+    component: RecipesListController,
   },
   {
     path: '/recipieslist',
@@ -86,7 +89,14 @@ const routes = [
     path: '/Userdetail',
     component:Userdetail,
   },
- 
+  {
+    path: '/Ingredients',
+    component:Ingredients,
+  },
+  {
+    path: '/Prefrences',
+    component:Prefrences,
+  },
 ]
 
 export default routes

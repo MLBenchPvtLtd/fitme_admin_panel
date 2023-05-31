@@ -16,7 +16,9 @@ import {
 } from '@windmill/react-ui'
 import "firebase/database";
 import { db } from '../../src/firebase'
-import { onValue, ref, orderByKey, query } from 'firebase/database';
+// import { onValue, ref, orderByKey, query } from 'firebase/database';
+import "firebase/database";
+import { collection, getDocs } from 'firebase/firestore'
 // img
 import response from '../utils/demo/tableData'
 
@@ -32,6 +34,7 @@ function Recipies({ handel_user_selection }) {
    * presentation details away from the page view.
    */
   const [users, setUsers] = useState([]);
+  const userCollectionRef = collection(db, "Users")
   // setup pages control for every table
   const [pageTable1, setPageTable1] = useState(1)
   const [pageTable2, setPageTable2] = useState(1)
@@ -62,18 +65,10 @@ function Recipies({ handel_user_selection }) {
   }, [pageTable2])
 
   // feyching dataa from fire base
-  const fetchUser = () => {
-    var withdrawRef = query(ref(db, `/Users/`), orderByKey());
-    onValue(withdrawRef, snapshot => {
-      const data = snapshot.val();
-      if (data !== null) {
-        setUsers([])
-        Object.values(data).map(user => {
-          setUsers(oldArray => [...oldArray, user])
-          
-        })
-      }
-    });
+  const fetchUser = async () => {
+    const querySnapshot = await getDocs(userCollectionRef);
+    const data = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    setUsers(data);
   }
   // recipie
   useEffect(() => {

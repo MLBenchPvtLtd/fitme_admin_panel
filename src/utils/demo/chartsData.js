@@ -1,3 +1,6 @@
+
+
+
 export const doughnutLegends = [
   { title: 'Fat', color: 'bg-red-500' },
   { title: 'Protein', color: 'bg-purple-600' },
@@ -11,8 +14,8 @@ export const lineLegends = [
 ]
 
 export const barLegends = [
-  { title: 'Shoes', color: 'bg-teal-600' },
-  { title: 'Bags', color: 'bg-purple-600' },
+  { title: 'Recipes', color: 'bg-teal-600' },
+  { title: 'Users', color: 'bg-purple-500' },
 ]
 
 export const doughnutOptions = {
@@ -28,7 +31,7 @@ export const doughnutOptions = {
         label: 'Dataset 1',
       },
     ],
-    labels: ['Fat', 'Protein', 'Carbohydrates','Calories'],
+    labels: ['January', 'February', 'March','april', 'May', 'June', 'Jully', 'August', 'September'],
   },
   options: {
     responsive: true,
@@ -39,7 +42,7 @@ export const doughnutOptions = {
   },
 }
 
-export const lineOptions = {
+export const lineOptions  = {
   data: {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
@@ -105,7 +108,7 @@ export const barOptions = {
     datasets: [
       {
         label: 'Shoes',
-        backgroundColor: '#fd1736',
+        backgroundColor: '#0694a2',
         // borderColor: window.chartColors.red,
         borderWidth: 1,
         data: [-3, 14, 52, 74, 33, 90, 70],

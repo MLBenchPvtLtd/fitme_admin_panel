@@ -14,18 +14,16 @@ import {
   Pagination,
   Button
 } from '@windmill/react-ui'
-
-import "firebase/database";
+import noprofileimg from '../assets/img/noprofile.png'
 import { db } from '../firebase'
-import { onValue, ref, orderByKey, query,remove } from 'firebase/database';
-// img
-import { EditIcon, TrashIcon } from '../icons'
-import { BsFillEyeFill } from "@react-icons/all-files/bs/BsFillEyeFill";
+import "firebase/database";
+import { collection, query, onSnapshot, getDocs } from 'firebase/firestore';
 
-const Users = ({ handel_users_selection,handleDelete }) => {
+const Users = ({ handel_users_selection, handleDelete }) => {
   const [page, setPage] = useState(1)
   const [data, setData] = useState([])
   const [users, setUsers] = useState([]);
+  const userCollectionRef = collection(db, "Users")
 
   // pagination setup
   const resultsPerPage = 10
@@ -41,17 +39,11 @@ const Users = ({ handel_users_selection,handleDelete }) => {
   }, [page])
 
   // fetching data from firebase
-  const fetchUser = () => {
-    var withdrawRef = query(ref(db, `/Users/`), orderByKey());
-    onValue(withdrawRef, snapshot => {
-      const data = snapshot.val();
-      if (data !== null) {
-        setUsers([])
-        Object.values(data).map(user => {
-          setUsers(oldArray => [...oldArray, user])
-        })
-      }
-    });
+  const fetchUser = async () => {
+    const querySnapshot = await getDocs(userCollectionRef);
+    const data = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    setUsers(data);
+
   }
 
   useEffect(() => {
@@ -61,67 +53,73 @@ const Users = ({ handel_users_selection,handleDelete }) => {
   // const handle_id = (id) => {
   // console.log(handel_users_id,"prop")
   // }
-
+ 
   return (
     <>
-      <PageTitle>Users</PageTitle>
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <tr>
-              <TableCell>Client</TableCell>
-              <TableCell>Age</TableCell>
-              <TableCell>Phone</TableCell>
-              <TableCell>Date</TableCell>
-            </tr>
-          </TableHeader>
-          <TableBody>
-            {users.map((user, i) => (
-              <TableRow key={i}>
-                <TableCell>
-                  <div className="flex items-center text-sm">
-                    {/* <Avatar className="hidden mr-3 md:block" src={user.name} alt="User image" /> */}
-                    <img className='h-10  w-10 mr-2' src={user.image_url} alt="" />
-                    <div>
-                      <p className="font-semibold">{user.user_name}</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">{user.user_email}</p>
+      <div className=" ">
+        <PageTitle>Users</PageTitle>
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <tr>
+                <TableCell>User</TableCell>
+                <TableCell>Email Address</TableCell>
+                <TableCell>Phone Number</TableCell>
+                <TableCell>Age</TableCell>
+                <TableCell>Detail</TableCell>
+              </tr>
+            </TableHeader>
+            <TableBody>
+              {users.map((user, i) => (
+                <TableRow key={i}>
+                  <TableCell>
+                    <div className="flex items-center text-sm">
+                      {/* <Avatar className="hidden mr-3 md:block" src={user.name} alt="User image" /> */}
+                      {(user.image_url  !== '' ) &&      <img className='h-10  w-10 mr-2 rounded-full' src={user.image_url} alt="" />}
+                      {(user.image_url  === '' ) &&      <img className='h-10  w-10 mr-2 rounded-full' src={noprofileimg} alt="" />}
+                   
+                      <div>
+                        <p className="text-lg font-semibold">{user.user_name}</p>
+                        <p className="text-sm font-normal text-gray-600 dark:text-gray-400">{user.user_email}</p>
+                      </div>
                     </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm"> {user.age}</span>
-                </TableCell>
-                <TableCell>
-                  <Badge >{user.phone}</Badge>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">{user.user_email}</span>
-                </TableCell>
-                <TableCell>
-                    <Button layout="link" size="icon" aria-label="eye">
-                      <BsFillEyeFill className="w-5 h-5 mx-3" aria-hidden="true" onClick={() => handel_users_selection(user, user.firebase_id,3)} />
-                    </Button>
-                  <Button layout="link"  size="icon" aria-label="Edit" onClick={() => handel_users_selection(user, user.firebase_id,2)} >
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-base font-medium">{user.user_email}</span>
+                  </TableCell>
+                  <TableCell>
+                    <Badge className="text-base font-medium">{user.phone}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-base font-medium"> {user.age}</span>
+                  </TableCell>
+
+
+                  <TableCell>
+                    <button className="btn font-medium text-sm rounded" onClick={() => handel_users_selection(user, user.firebase_id, 3)} style={{ width: "100.57px", height: "30.5px", color: "#7D7D7D", border: "1px solid #7D7D7D" }}> View Detail</button>
+
+                    {/* <Button layout="link"  size="icon" aria-label="Edit" onClick={() => handel_users_selection(user, user.firebase_id,2)} >
                     <EditIcon className="w-5 h-5 mx-3" aria-hidden="true" />
                   </Button>
                   <Button layout="link" size="icon" aria-label="Delete" onClick={() =>  handleDelete(user.firebase_id)}>
                     <TrashIcon className="w-5 h-5 mx-3" aria-hidden="true" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <TableFooter>
-          <Pagination
-            totalResults={totalResults}
-            resultsPerPage={resultsPerPage}
-            label="Table navigation"
-            onChange={onPageChange}
-          />
-        </TableFooter>
-      </TableContainer>
+                  </Button> */}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <TableFooter>
+            <Pagination
+              totalResults={totalResults}
+              resultsPerPage={resultsPerPage}
+              label="Table navigation"
+              onChange={onPageChange}
+            />
+          </TableFooter>
+        </TableContainer>
 
+      </div>
 
     </>
   )

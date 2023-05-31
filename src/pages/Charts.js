@@ -7,7 +7,7 @@ import PageTitle from '../components/Typography/PageTitle'
 import {
   doughnutOptions,
   lineOptions,
-  barOptions,
+
   doughnutLegends,
   lineLegends,
   barLegends,
@@ -29,10 +29,6 @@ function Charts() {
           <ChartLegend legends={lineLegends} />
         </ChartCard>
 
-        <ChartCard title="Bars">
-          <Bar {...barOptions} />
-          <ChartLegend legends={barLegends} />
-        </ChartCard>
       </div>
     </>
   )

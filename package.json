@@ -20,7 +20,7 @@
     "@testing-library/jest-dom": "4.2.4",
     "@testing-library/react": "9.5.0",
     "@testing-library/user-event": "7.2.1",
-    "@windmill/react-ui": "0.3.1",
+    "@windmill/react-ui": "^0.3.1",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
     "faker": "4.1.0",
@@ -30,7 +30,7 @@
     "react-dom": "^16.13.1",
     "react-focus-lock": "2.4.0",
     "react-hook-form": "^7.43.9",
-    "react-icons": "^4.8.0",
+    "react-icons": "^4.9.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-select": "^5.7.0",
@@ -48,7 +48,7 @@
     "postcss-cli": "7.1.1",
     "react-axe": "3.5.2",
     "release-it": "13.6.4",
-    "tailwindcss": "1.4.6"
+    "tailwindcss": "^1.4.6"
   },
   "keywords": [
     "windmill",

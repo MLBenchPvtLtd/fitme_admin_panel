@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 
-import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { doc, setDoc } from 'firebase/firestore';
+
 import { storage } from "../firebase";
 import Imageurl from "./Imageurl";
+import { db } from '../firebase'
 const Addrecipies = ({ selected_user_id,handlecancel }) => {
 
   const [image, setImage] = useState(null);
-  const [image_url, setUrl] = useState(null);
+  const [img_url, setUrl] = useState(null);
   const [newrecipe, setNewrecipe] = useState('');
   const handleImageChange = (e) => {
     console.log(e)
@@ -24,18 +27,40 @@ const Addrecipies = ({ selected_user_id,handlecancel }) => {
     });
   };
 
+
+  //   console.log(image)
+  //   const imageRef = ref(storage, "image"+image.name);
+  //   uploadBytes(imageRef, image)
+  //     .then(() => {
+  //       getDownloadURL(imageRef)
+  //         .then((url) => {
+  //           setUrl(url);
+  //           console.log(url)
+  //         })
+  //         .catch((error) => {
+  //           console.log(error.message, "error getting the image url");
+  //         });
+  //       setImage(null);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.message);
+  //     });
+  // };
+
   const handleSubmit = () => {
-    console.log(image)
-    const imageRef = ref(storage, "image"+image.name);
-    uploadBytes(imageRef, image)
+    console.log(image);
+    const storageRef = ref(storage, "images/" + image.name);
+  
+    uploadBytes(storageRef, image)
       .then(() => {
-        getDownloadURL(imageRef)
+        getDownloadURL(storageRef)
           .then((url) => {
             setUrl(url);
-            console.log(url)
+            console.log(url);
+            
           })
           .catch((error) => {
-            console.log(error.message, "error getting the image url");
+            console.log(error.message, "error getting the image URL");
           });
         setImage(null);
       })
@@ -43,12 +68,10 @@ const Addrecipies = ({ selected_user_id,handlecancel }) => {
         console.log(error.message);
       });
   };
-
-
   return (
     <>
 
-      <Imageurl image_url={image_url} handlecancel={handlecancel} selected_user_id={selected_user_id} handleImageChange={handleImageChange} handleSubmit={handleSubmit} handleChange={handleChange} newrecipe={newrecipe} />
+      <Imageurl img_url={img_url} handlecancel={handlecancel} selected_user_id={selected_user_id} handleImageChange={handleImageChange} handleSubmit={handleSubmit} handleChange={handleChange} newrecipe={newrecipe} />
     </>
   )
 }

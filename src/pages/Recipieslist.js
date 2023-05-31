@@ -20,6 +20,8 @@ import {
 import "firebase/database";
 import { db } from '../../src/firebase'
 import { onValue, ref, orderByKey, query, remove } from 'firebase/database';
+import "firebase/database";
+import { collection, getDocs,where,onSnapshot,deleteDoc,doc } from 'firebase/firestore'
 import RecpieRow from './RecpieRow';
 const Recipieslist = ({ selected_user_id, handel_recipe_selection, handleback, handle_add_recipe }) => {
 
@@ -27,26 +29,44 @@ const Recipieslist = ({ selected_user_id, handel_recipe_selection, handleback, h
   const [text, setText] = useState();
   const [recipie_key, setRecipie_key] = useState('');
 
-  const fetchUser = () => {
-    var withdrawRef = query(ref(db, `/recipes/${selected_user_id}`), orderByKey());
-    onValue(withdrawRef, snapshot => {
-      const data = snapshot.val();
+  // const fetchUser = () => {
+  //   var withdrawRef = query(ref(db, `/recipes/${selected_user_id}`), orderByKey());
+  //   onValue(withdrawRef, snapshot => {
+  //     const data = snapshot.val();
 
-      if (data !== null) {
-        setShowrecipies([])
-        Object.values(data).map(user => {
-          setShowrecipies(oldArray => [...oldArray, user])
+  //     if (data !== null) {
+  //       setShowrecipies([])
+  //       Object.values(data).map(user => {
+  //         setShowrecipies(oldArray => [...oldArray, user])
 
-        })
-        Object.keys(data).map(recpieid => {
-          setRecipie_key(oldArray => [...oldArray, recpieid])
-        })
-      }
-      else {
+  //       })
+  //       Object.keys(data).map(recpieid => {
+  //         setRecipie_key(oldArray => [...oldArray, recpieid])
+  //       })
+  //     }
+  //     else {
 
-        setText("No recipie availabe")
+  //       setText("No recipie availabe")
+  //     }
+  //   });
+  // }
+  const fetchUser = async () => {
+    const withdrawRef = query(
+      collection(db, "/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes")
+    );
+  
+    onSnapshot(withdrawRef, (querySnapshot) => {
+      const data = querySnapshot.docs.map((doc) => doc.data());
+  console.log(data,"dataa")
+      if (data.length > 0) {
+        console.log(data,"datas")
+        setShowrecipies(data);
+        setRecipie_key(querySnapshot.docs.map((doc) => doc.id));
+      } else {
+        setText('No recipe available');
       }
     });
+    
   }
   // recipie
   useEffect(() => {
@@ -54,9 +74,14 @@ const Recipieslist = ({ selected_user_id, handel_recipe_selection, handleback, h
 
   }, []);
 
+  // const handleDelete = (id) => {
+  //   remove(ref(db, `/recipes/${selected_user_id}/${id}`),);
+  // }
   const handleDelete = (id) => {
-    remove(ref(db, `/recipes/${selected_user_id}/${id}`),);
-  }
+    const recipeDocRef = doc(db, "/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes", id);
+    deleteDoc(recipeDocRef);
+   
+  };
   return (
 
     <>

@@ -1,10 +1,10 @@
 import React from 'react'
 import { Card, CardBody } from '@windmill/react-ui'
 
-function InfoCard({ title, value, children: icon }) {
+function InfoCard2({ title, value, children: icon }) {
   return (
-    <Card style={{background: "#F8D6DA"}}>
-      <CardBody className=" items-center justify-between " style={{background: "#F8D6DA"}}>
+    <Card style={{background: "#CEEAE9"}}>
+      <CardBody className=" items-center justify-between " style={{background: "#CEEAE9"}}>
       {icon}
         <div className="">
           <p className="text-lg my-4  font-semibold text-gray-700 dark:text-gray-200" >{title}</p>
@@ -16,4 +16,4 @@ function InfoCard({ title, value, children: icon }) {
   )
 }
 
-export default InfoCard
+export default InfoCard2

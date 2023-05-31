@@ -37,7 +37,6 @@ const Userimage = ({ selected_user_id_selection, selected_user_object_selection,
     const update_user = () => {
         selected_user_object_edit.image_url = image_url;
         update(ref(db, `/Users/${selected_user_id_selection}`), selected_user_object_edit);
-        console.log(selected_user_id_selection, "detaill");
     }
 
   return (

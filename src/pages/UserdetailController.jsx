@@ -1,38 +1,39 @@
-// import React, { useState, useEffect } from 'react'
-// import Users from './Users'
-// import Test from './Test'
-// import Userdetail from './Userdetail';
+import React, { useState, useEffect } from 'react'
+import Users from './Users'
+import RecipeDetail from './RecipeDetail'
+import Userdetail from './Userdetail';
 
-// const UserdetailController = () => {
-//     const [selected_user_id_selection, set_selected_user_id_selection] = useState('');
-//     const [selected_user_object_selection, set_selected_user_object_selection] = useState('');
-//     const [page_index, set_page_index] = useState(1);
-//     // function defination work of the function 
-//     const handel_users_selection_detail = (id, userid) => {
-//         //   set_page_index(2)
-//         set_page_index(2)
-//         set_selected_user_object_selection(id);
-//         set_selected_user_id_selection(userid);
-//         console.log(id, "user id")
-//     }
+const UserdetailController = ({selected_user_object_selection,handleback}) => {
+    const [selected_user_id_selection, set_selected_user_id_selection] = useState('');
 
+    const [selected_recipe, set_selected_recipe] = useState('');
+    const [selected_recipe_key, set_selected_recipe_key] = useState('');
+    const [page_index, set_page_index] = useState(1);
+    // function defination work of the function 
+   
+   
+    useEffect(() => {
+        console.log(handel_recipe_selection,"handel_recipe_selection")
+      }, []);
+      const handlecancel = (index) => {
+        set_selected_recipe('')
+        set_page_index(1)
+      }
+    const handel_recipe_selection = (recipe,kiey,recipie_key) => {
+        set_selected_recipe(recipe);
+        console.log(recipe,"recp")
+        set_selected_recipe_key(recipie_key)
+        set_page_index(2)
+    }
+    // set_selected_user_id_("hello prop")
+    return (
 
-//     const handlecancel = (index) => {
-//         set_selected_user_id_selection('')
-//         set_page_index(1)
-//         console.log(index)
-//     }
+        <>
+      {(selected_recipe === ''&& page_index === 1) && <Userdetail handleback={handleback} selected_user_object_selection={selected_user_object_selection} handel_recipe_selection={handel_recipe_selection} selected_user_id_selection={selected_user_id_selection}  />}
+         {(selected_recipe !== ''  && page_index === 2) && <RecipeDetail handlecancel={handlecancel} selected_recipe_key={selected_recipe_key} handel_recipe_selection={handel_recipe_selection} selected_recipe={selected_recipe}  selected_user_id_selection={selected_user_id_selection} />}
+            
+        </>
+    )
+}
 
-//     // set_selected_user_id_("hello prop")
-//     return (
-
-//         <>
-
-//             {(selected_user_id_selection === '' && page_index === 1) && <Users handel_users_selection_detail={handel_users_selection_detail} selected_user_object_selection={selected_user_object_selection} selected_user_id_selection={selected_user_id_selection} />}
-//             {(selected_user_id_selection !== '' && page_index === 2) && <Userdetail selected_user_id_selection={selected_user_id_selection} handlecancel={handlecancel} selected_user_object_selection={selected_user_object_selection} />}
-
-//         </>
-//     )
-// }
-
-// export default UserdetailController
+export default UserdetailController

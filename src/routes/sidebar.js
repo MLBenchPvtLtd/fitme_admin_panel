@@ -20,15 +20,31 @@ const routes = [
   {
     path: '/app/Users',
     icon: 'FormsIcon',
-    name: 'Users',
+    name: 'All Users',
   },
   {
     path: '/app/recipies',
     icon: 'CardsIcon',
-    name: 'Recipies',
+    name: 'Fitmerecipies',
   },
+  {
+    path: '/app/addrecipies',
+    icon: 'EditIcon',
+    name: 'Add FitMe Recipies',
+  },
+  {
+    path: '/app/ingredients',
+    icon: 'FormsIcon',
+    name: 'Ingredients',
+  },
+  {
+    path: '/app/prefrences',
+    icon: 'MenuIcon',
+    name: 'Preferences',
+  }
  
-
+ 
+  
   // {
   //   icon: 'PagesIcon',
   //   name: 'Pages',

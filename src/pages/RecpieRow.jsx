@@ -87,13 +87,10 @@ const RecpieRow = ({ recipe, kiey, handel_recipe_selection,selected_recipe,selec
           <div className="py-5">
 
             <div className="grid grid-cols-1  lg:grid-cols-4 auto-rows-max  ">
-
-
               <div className="col-span-3 ...">
                 <div className="px-5">
                 <h1 className="px-5 py-2 font-bold"> User Name : {recipe.userName}</h1>
                   <h1 className="px-5 py-3 font-bold"> Difficulty : {recipe.make_difficulity}</h1>
-
                   <p className="font-normal"> <span className="font-bold"> Description :</span>
                   {recipe.details}
                     </p>
