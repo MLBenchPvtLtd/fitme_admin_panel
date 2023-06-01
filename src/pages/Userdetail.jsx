@@ -11,30 +11,32 @@ import imgbreakfast from '../assets/img/breakfast.png'
 import imgp from '../assets/img/profile.png'
 import { db } from '../firebase'
 import "firebase/database";
-import { collection, query, onSnapshot, getDocs } from 'firebase/firestore';
+import { collection, query, onSnapshot, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import ChartCard from '../components/Chart/ChartCard';
 import { Doughnut } from 'react-chartjs-2';
 import ChartLegend from '../components/Chart/ChartLegend';
 import Recipiescomp from '../components/recipies/recipiescomp';
 import { BsFillArrowLeftCircleFill } from 'react-icons/bs';
-const Userdetail = ({ selected_user_id_selection, selected_user_object_selection, handleback,handel_recipe_selection }) => {
+import Userrecpcomp from '../components/recipies/Userrecpcomp'
+const Userdetail = ({  selected_user_object_selection, handleback,handel_recipe_selection, }) => {
     const [selected_user_object_edit, set_selected_user_object_edit] = useState(selected_user_object_selection);
     const [chart_data, set_chart_data] = useState()
     const [showrecipies, setShowrecipies] = useState([]);
     const [recipie_key, setRecipie_key] = useState('');
     const [text, setText] = useState();
     const userCollectionRef = collection(db,'Users', 's48rdKPmfuUcQLBxHpnP91U6MG02', 'recipes')
-    // update user
-    // const update_user = () => {
-    //     update(ref(db, `/Users/${selected_user_id_selection}`), selected_user_object_edit);
-    // }
+
     const fetchUser = async () => {
         const querySnapshot = await getDocs(userCollectionRef);
         const data = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         console.log(data,"dataa");
         setShowrecipies(data);
       };
-   
+      const handleDelete = (id,index) => {
+        // const recipeDocRef = doc(db, "/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes", id);
+        // deleteDoc(recipeDocRef);
+console.log(id,index,"idd")
+    };
     useEffect(() => {
         fetchUser();
         console.log(handel_recipe_selection,"recip")
@@ -66,7 +68,7 @@ const Userdetail = ({ selected_user_id_selection, selected_user_object_selection
                         {(selected_user_object_selection.image_url === '') && <img class="w-200 h-200 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500 " style={{ marginLeft: "20%", width: "60%" }} src={noprofileimg} alt="" />}
                             </div>
                             <h2 className="font-bold">{selected_user_object_selection.user_name}</h2>
-                            <p className="text-xs">{selected_user_object_selection.firebase_id}</p>
+                           <div className="overflow-hidden w-11/12" style={{marginLeft:"5%"}}> <p className="text-xs">{selected_user_object_selection.firebase_id}</p></div>
                         </div>
                         {/* right */}
                         <div className='col-span-2 ' style={{ background: "white", borderRadius: "10px" }}>
@@ -92,7 +94,7 @@ const Userdetail = ({ selected_user_id_selection, selected_user_object_selection
                     <div className='pb-5'>
                     {showrecipies.map((recipe, index) => (
                 <div>
-                    <Recipiescomp recipe={recipe} kiey={index} recipie_key={recipie_key[index]} handel_recipe_selection={handel_recipe_selection} />
+                    <Userrecpcomp recipe={recipe}  kiey={index} recipie_key={recipie_key[index]} handleDelete={handleDelete} handel_recipe_selection={handel_recipe_selection} />
                 </div>
             ))}
 

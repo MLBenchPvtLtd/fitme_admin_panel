@@ -19,7 +19,6 @@ const Fitmerecipies = ({handel_recipe_selection}) => {
             const data = querySnapshot.docs.map((doc) => doc.data());
             console.log(data, "dataa")
             if (data.length > 0) {
-                console.log(data, "datas")
                 setShowrecipies(data);
                 setRecipie_key(querySnapshot.docs.map((doc) => doc.id));
             } else {
@@ -31,7 +30,7 @@ const Fitmerecipies = ({handel_recipe_selection}) => {
     const handleDelete = (id) => {
         const recipeDocRef = doc(db, "/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes", id);
         deleteDoc(recipeDocRef);
-
+console.log(id,"idd")
     };
     // recipie
     useEffect(() => {

@@ -46,9 +46,9 @@ function Dashboard() {
   const [recipes, set_recipes] = useState([])
   const userCollectionRef = collection(db, "Users")
   const recipeCollectionRef = collection(db, "recipes")
-  const [recipesByMonth, setRecipesByMonth] = useState([]);
-  const [userByMonth, setUserByMonth] = useState([]);
-  const [recipesMonthName, setRecipesMonthName] = useState([]);
+  const [recipesByMonth, setRecipesByMonth] = useState("");
+  const [userByMonth, setUserByMonth] = useState("");
+  const [recipesMonthName, setRecipesMonthName] = useState("");
   // pagination setup
   const resultsPerPage = 10
   const totalResults = response.length
@@ -226,17 +226,17 @@ function Dashboard() {
   };
 
   const dataa = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    labels: recipesMonthName,
     datasets: [
       {
-        label: "Product A",
-        data: [60,10,30,100],
-        backgroundColor: "green",
+        label: "Users",
+        data: userByMonth,
+        backgroundColor: "#7e3af2",
       },
       {
-        label: 'Product B',
-        data: [0,10,20,30],
-        backgroundColor: 'blue'
+        label: 'Recipies',
+        data: recipesByMonth,
+        backgroundColor: '#0694a2'
       },
 
     ],
@@ -247,17 +247,12 @@ function Dashboard() {
 
   return (
     <>
-      <PageTitle>Dashboard </PageTitle>
+      <PageTitle>Welcome Back </PageTitle>
 
       <div className="App">
 
       </div>
-      {/* <div className="">
-        {recipes.map(el => (
-         
-        ))}
 
-      </div> */}
       <div className="grid lg:grid-cols-5 xl:grid-cols-4 md:grid-cols-5 grid-cols-1 gap-4 px-0">
 
         <div className=" md:col-span-3 lg:col-span-3 xl:col-span-3">
@@ -290,7 +285,7 @@ function Dashboard() {
               </ChartCard>
             )}
          */}
-        {recipesByMonth !== null && userByMonth !== null && (
+        {userByMonth !== "" && recipesMonthName !== "" && recipesByMonth !== "" &&(
           <ChartCard className="max-h-32" title="Bars">
           <Bar style={{ maxHeight: "200px" }} options={option} data={dataa} />
           <ChartLegend style={{ maxHeight: "200px" }} legends={barLegends} />

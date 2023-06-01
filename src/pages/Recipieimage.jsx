@@ -34,7 +34,8 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
 
   
     const update_recipe = () => {
-        const recipeDocRef = doc(db, "/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes/72cb48e0-8244-419f-a04d-a47c7005262a");
+        console.log(`/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes/${selected_recipe_key}`)
+        const recipeDocRef = doc(db, `/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes/${selected_recipe_key}`);
         const updatedDetails = {
             ...printdetails,
             img_url: img_url
@@ -86,7 +87,7 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
                         <label className="font-medium text-lg" htmlFor=""> Category</label>
 
                     </div>
-                    <input name="makeTime" type="text" value={printdetails.category} onChange={handleChange} className=" w-11/12 mb-2 px-3 py-2 mt-1 mb-3 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
+                    <input name="category" type="text" value={printdetails.category} onChange={handleChange} className=" w-11/12 mb-2 px-3 py-2 mt-1 mb-3 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
 
 
 

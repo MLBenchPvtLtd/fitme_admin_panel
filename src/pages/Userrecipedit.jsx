@@ -10,7 +10,7 @@ import Recipieimage from "./Recipieimage";
 
 
 
-const RecipeDetail = ({ selected_recipe, selected_user_id, selected_recipe_key, recipie_key, handlecancel }) => {
+const Userrecipedit = ({ selected_recipe, selected_user_id, selected_recipe_key, recipie_key, handlecancel }) => {
   const [image, setImage] = useState(null);
     const [img_url, setUrl] = useState(null);
 
@@ -25,26 +25,10 @@ const RecipeDetail = ({ selected_recipe, selected_user_id, selected_recipe_key, 
          
         }
       };
-    //   const handleSubmit = () => {
-    //     console.log(image)
-    //     const imageRef = ref(storage, "image"+image.name);
-    //     uploadBytes(imageRef, image)
-    //       .then(() => {
-    //         getDownloadURL(imageRef)
-    //           .then((url) => {
-    //             setUrl(url);
-    //             console.log(url)
-    //           })
-    //           .catch((error) => {
-    //             console.log(error.message, "error getting the image url");
-    //           });
-    //         setImage(null);
-    //       })
-    //       .catch((error) => {
-    //         console.log(error.message);
-    //       });
-    //   };
-    
+ const checkkeyy = () => {
+    console.log(selected_recipe_key);
+ }
+
 const handleSubmit = () => {
   console.log(image);
   const storageRef = ref(storage, "images/" + image.name);
@@ -77,10 +61,10 @@ const handleSubmit = () => {
 };
   return (
     <>
-      <Recipieimage img_url={img_url} selected_user_id={selected_user_id} handlecancel={handlecancel} selected_recipe={selected_recipe} selected_recipe_key={selected_recipe_key} handleImageChange={handleImageChange} handleSubmit={handleSubmit} />
+    <button style={{color:"black"}} onClick={checkkeyy}>checkkeyy</button>
+      <Recipieimage img_url={img_url} selected_user_id={selected_user_id} handlecancel={handlecancel} recipie_key={recipie_key} selected_recipe={selected_recipe} selected_recipe_key={selected_recipe_key} handleImageChange={handleImageChange} handleSubmit={handleSubmit} />
     </>
 
   )
 }
-
-export default RecipeDetail
+export default Userrecipedit

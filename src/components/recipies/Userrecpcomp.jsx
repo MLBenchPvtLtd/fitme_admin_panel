@@ -3,7 +3,7 @@ import recipeimg from '../../assets/img/recipieimg.png'
 import { collection, getDocs, where, onSnapshot, deleteDoc, doc } from 'firebase/firestore'
 import Swal from 'sweetalert2'
 import axios from 'axios';
-const recipiescomp = ({ recipe, recipie_key, kiey, handleDelete, handel_recipe_selection }) => {
+const Userrecpcomp = ({ recipe, recipie_key, kiey, handleDelete, handel_recipe_selection }) => {
 
 
 const handleDelete2 = (id) => {
@@ -77,4 +77,4 @@ const handleDelete2 = (id) => {
   )
 }
 
-export default recipiescomp
+export default Userrecpcomp

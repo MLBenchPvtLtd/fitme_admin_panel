@@ -17,10 +17,12 @@
   },
   "dependencies": {
     "@react-icons/all-files": "^4.1.0",
+    "@sweetalert2/themes": "^5.0.15",
     "@testing-library/jest-dom": "4.2.4",
     "@testing-library/react": "9.5.0",
     "@testing-library/user-event": "7.2.1",
     "@windmill/react-ui": "^0.3.1",
+    "axios": "^1.4.0",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
     "faker": "4.1.0",
@@ -35,6 +37,7 @@
     "react-scripts": "3.4.1",
     "react-select": "^5.7.0",
     "react-transition-group": "4.4.1",
+    "recharts": "^2.6.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

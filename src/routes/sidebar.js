@@ -30,7 +30,7 @@ const routes = [
   {
     path: '/app/addrecipies',
     icon: 'EditIcon',
-    name: 'Add FitMe Recipies',
+    name: 'FitMe Receipe',
   },
   {
     path: '/app/ingredients',
