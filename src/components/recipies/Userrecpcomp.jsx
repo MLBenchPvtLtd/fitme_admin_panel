@@ -64,7 +64,7 @@ const handleDelete2 = (id) => {
        
           
             <div><button className="mx-3 text-sm" style={{ color: "#00A7A1" }} onClick={() => handel_recipe_selection(recipe, kiey, recipie_key)}>Edit</button></div>
-            <div><button className="mx-2 text-sm" style={{ color: "#ED6366" }}    onClick={() => handleDelete(recipie_key)}>Delete</button></div>
+            <div><button className="mx-2 text-sm" style={{ color: "#ED6366" }} onClick={() => handleDelete(recipie_key)}>Delete</button></div>
           </div>
         </div>
 

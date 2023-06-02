@@ -2,7 +2,7 @@
 
 
 export const doughnutLegends = [
-  { title: 'Fat', color: 'bg-red-500' },
+  { title: 'Fat', color: 'bg-red-600' },
   { title: 'Protein', color: 'bg-purple-600' },
   { title: 'Carbohydrates', color: 'bg-green-600' },
   { title: 'Calories', color: 'bg-yellow-600' },

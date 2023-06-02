@@ -25,12 +25,12 @@ const routes = [
   {
     path: '/app/recipies',
     icon: 'CardsIcon',
-    name: 'Fitmerecipies',
+    name: 'FitMe Receipe',
   },
   {
     path: '/app/addrecipies',
     icon: 'EditIcon',
-    name: 'FitMe Receipe',
+    name: 'Add FitMe Recipies',
   },
   {
     path: '/app/ingredients',

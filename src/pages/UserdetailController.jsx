@@ -3,8 +3,8 @@ import Users from './Users'
 import Userrecipedit from './Userrecipedit'
 import Userdetail from './Userdetail';
 
-const UserdetailController = ({selected_user_object_selection,handleback}) => {
-    const [selected_user_id_selection, set_selected_user_id_selection] = useState('');
+const UserdetailController = ({selected_user_object_selection,handleback,selected_user_id_selection}) => {
+ 
 
     const [selected_recipe, set_selected_recipe] = useState('');
     const [selected_recipe_key, set_selected_recipe_key] = useState('');
@@ -29,8 +29,8 @@ const UserdetailController = ({selected_user_object_selection,handleback}) => {
     return (
 
         <>
-      {(selected_recipe === ''&& page_index === 1) && <Userdetail handleback={handleback} selected_recipe_key={selected_recipe_key} selected_user_object_selection={selected_user_object_selection} handel_recipe_selection={handel_recipe_selection} selected_user_id_selection={selected_user_id_selection}  />}
-         {(selected_recipe !== ''  && page_index === 2) && <Userrecipedit handlecancel={handlecancel} selected_recipe_key={selected_recipe_key} handel_recipe_selection={handel_recipe_selection} selected_recipe={selected_recipe}  selected_user_id_selection={selected_user_id_selection} />}
+      {(selected_recipe === '' && page_index === 1) && <Userdetail handleback={handleback} selected_recipe={selected_recipe} selected_recipe_key={selected_recipe_key} selected_user_object_selection={selected_user_object_selection} handel_recipe_selection={handel_recipe_selection} selected_user_id_selection={selected_user_id_selection}  />}
+         {(selected_recipe !== ''  && page_index === 2) && <Userrecipedit handlecancel={handlecancel} selected_recipe={selected_recipe} selected_recipe_key={selected_recipe_key} handel_recipe_selection={handel_recipe_selection}  selected_user_id_selection={selected_user_id_selection} />}
             
         </>
     )

@@ -60,22 +60,22 @@ function Login() {
               <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">Login</h1>
               <form onSubmit={onLogin}>
                 <Label>
-                  <span class>Email</span>
+                  <span className='font-semibold'>Email</span>
                   <Input className="mt-1" id="email-address"
                     name="email"
                     type="email"
                     required
-                    placeholder="Email address"
+                    placeholder="Enter your Email"
                     onChange={(e) => setEmail(e.target.value)} />
                 </Label>
 
                 <Label className="mt-4 laafcolor">
-                  <span>Password</span>
+                  <span className='font-semibold'>Password</span>
                   <Input className="mt-1" id="password"
                     name="password"
                     type="password"
                     required
-                    placeholder="Password"
+                    placeholder="Enter your Password"
                     onChange={(e) => setPassword(e.target.value)} />
                 </Label>
                 <p className="mt-4 text-right">
@@ -88,7 +88,7 @@ function Login() {
                 </Link>
               </p>
                 <Button type="submit" className="mt-4 w-full laafcolor" style={{backgroundColor: "#00A7A1"}} >
-                  Log in
+                  Login
                 </Button>
               </form>
         
