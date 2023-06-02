@@ -40,7 +40,6 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
 
         onSnapshot(withdrawRef, (querySnapshot) => {
             const data = querySnapshot.docs.map((doc) => doc.data());
-            console.log(data, "dataa")
             if (data.length > 0) {
                 setShowrecipies(data);
                 setRecipie_key(querySnapshot.docs.map((doc) => doc.id));

@@ -14,7 +14,7 @@ const Dailymeal = () => {
 
     const getCurrentDateMeals = async () => {
         const currentDate =  ["05-12-2023", "04-12-2023", "12-12-2022", "12-18-2022", "12-26-2022", "12-27-2022"];
-        const breakfastPath = `/meal_planner/FJqAyF4PMsdJZg29uiMtZO3fkxj1${currentDate}`;
+        const breakfastPath = `//meal_planner/0eg0luUa0gdViAxx3NvkPYKSoVZ2/Breakfast/05-14-2023/-NJnMKWqckaeBKCvq_2u`;
         const lunchPath = `meal_planner/0eg0luUa0gdViAxx3NvkPYKSoVZ2/Lunch/${currentDate}`;
       
         const db = getDatabase();
@@ -48,6 +48,8 @@ const Dailymeal = () => {
                                 </p>
                             </div>
                         )}
+
+
 
                     </div>
                 </div>

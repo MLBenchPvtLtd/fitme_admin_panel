@@ -98,12 +98,6 @@ const Users = ({ handel_users_selection, handleDelete }) => {
                   <TableCell>
                     <button className="btn font-medium text-sm rounded" onClick={() => handel_users_selection(user, user.firebase_id, 3)} style={{ width: "100.57px", height: "30.5px", color: "#7D7D7D", border: "1px solid #7D7D7D" }}> View Detail</button>
 
-                    {/* <Button layout="link"  size="icon" aria-label="Edit" onClick={() => handel_users_selection(user, user.firebase_id,2)} >
-                    <EditIcon className="w-5 h-5 mx-3" aria-hidden="true" />
-                  </Button>
-                  <Button layout="link" size="icon" aria-label="Delete" onClick={() =>  handleDelete(user.firebase_id)}>
-                    <TrashIcon className="w-5 h-5 mx-3" aria-hidden="true" />
-                  </Button> */}
                   </TableCell>
                 </TableRow>
               ))}

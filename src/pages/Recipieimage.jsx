@@ -33,16 +33,54 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
     };
 
   
+     
     const update_recipe = () => {
-        console.log(`/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes/${selected_recipe_key}`)
-        const recipeDocRef = doc(db, `/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes/${selected_recipe_key}`);
+
+        const recipeDocRef = doc(
+          db,
+          `/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes/${selected_recipe_key}`
+        );
         const updatedDetails = {
-            ...printdetails,
-            img_url: img_url
+          ...printdetails,
+          img_url: img_url
         };
-        updateDoc(recipeDocRef, updatedDetails);
-        console.log(updatedDetails, "details");
-    };
+        updateDoc(recipeDocRef, updatedDetails)
+          .then(() => {
+            console.log(updatedDetails, "details");
+            alert("Update successful"); // Show alert message
+          })
+          .catch((error) => {
+            console.error("Error updating document: ", error);
+            alert("Update failed"); // Show alert message
+          });
+      };
+
+
+
+    
+    // const history = useHistory();
+
+    // const add_recipe = async (e) => {
+    //   e.preventDefault();
+    //   const uuid = uuidv4();
+    
+    //   if ( printdetails !== "") {
+    //     printdetails.img_url = img_url;
+    //     const recipeDocRef = doc(db, 'Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes', uuid);
+    //     try {
+    //       await setDoc(recipeDocRef, printdetails);
+    //       console.log('Recipe added successfully');
+    //       console.log(img_url);
+    
+    //       // Navigate to the Fitmerecipe component
+    //       history.push('/app/recipies');
+    //     } catch (error) {
+    //       console.error('Error adding recipe:', error);
+    //     }
+    //   } else {
+    //     alert('Please select an image and fill in all input fields');
+    //   }
+    // };
     return (
         <>
             <h1 className="my-5 font-semibold text-3xl" >Edit Recipie</h1>
