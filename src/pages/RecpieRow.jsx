@@ -47,7 +47,7 @@ const RecpieRow = ({ recipe, kiey, handel_recipe_selection,selected_recipe,selec
                     <img className='h-10  w-10 mr-2' src={recipe.image_url} alt="" />
                     <div>
                       <p className="font-semibold">{recipe.name}</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 w-64 truncate ">{recipe.details}</p>
+                      <p className="text-xs text-gray-600  w-64 truncate ">{recipe.details}</p>
                     </div>
                   </div>
                 </TableCell>

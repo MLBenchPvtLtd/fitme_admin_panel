@@ -115,10 +115,10 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
                     </select>
 
                     <div className="mt-4 pb-1 ">
-                        <label className="font-medium text-lg" htmlFor=""> Time Required</label>
+                        <label className="font-medium text-lg" htmlFor=""> Time Required in Minutes </label>
 
                     </div>
-                    <input name="makeTime" value={printdetails.makeTime} onChange={handleChange} type="text" className=" w-11/12 mb-2 px-3 py-2 mt-1 mb-3 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
+                    <input name="makeTime" value={printdetails.makeTime} onChange={handleChange} min="0" type="number" className=" w-11/12 mb-2 px-3 py-2 mt-1 mb-3 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
 
 
                     <div className="mt-4 pb-1 ">
@@ -139,14 +139,14 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
                             <div className="mt-2 pb-1 ">
                                 <label className="font-medium text-lg" htmlFor="">Calories</label>
                             </div>
-                            <input name="calories" value={printdetails.calories} onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
+                            <input name="calories" value={printdetails.calories} min="0" onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
                         </div>
 
                         <div>
                             <div className="mt-2 pb-1 ">
                                 <label className="font-medium text-lg" htmlFor=""> Protiens</label>
                             </div>
-                            <input name="protenis" value={printdetails.protenis} onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
+                            <input name="protenis" value={printdetails.protenis} min="0" onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
 
                         </div>
 
@@ -154,7 +154,7 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
                             <div className="mt-2 pb-1 ">
                                 <label className="font-medium text-lg" htmlFor=""> Fats</label>
                             </div>
-                            <input name="fat" value={printdetails.fat} onChange={handleChange} type="text" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
+                            <input name="fat" value={printdetails.fat} onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
 
                         </div>
                         <div>
@@ -163,7 +163,7 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
                             <div className="mt-2 pb-1 ">
                                 <label className="font-medium text-lg" htmlFor=""> Carbohydrates</label>
                             </div>
-                            <input name="carbohydrates" value={printdetails.carbohydrates} onChange={handleChange} type="text" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
+                            <input name="carbohydrates" value={printdetails.carbohydrates} min="0" onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
 
                         </div>
                     </div>

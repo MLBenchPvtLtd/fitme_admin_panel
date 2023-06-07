@@ -6,11 +6,43 @@ import { onValue, ref, orderByKey, query, remove } from 'firebase/database';
 import "firebase/database";
 import { collection, getDocs, where, onSnapshot, deleteDoc, doc } from 'firebase/firestore'
 import RecpieRow from './RecpieRow';
-const Fitmerecipies = ({handel_recipe_selection}) => {
+import {
+    TableBody,
+    TableContainer,
+    Table,
+    TableHeader,
+    TableCell,
+    TableRow,
+    TableFooter,
+    // Avatar,
+    Badge,
+    Pagination,
+    Button
+} from '@windmill/react-ui'
+const Fitmerecipies = ({ handel_recipe_selection }) => {
     const [showrecipies, setShowrecipies] = useState([]);
     const [text, setText] = useState();
     const [recipie_key, setRecipie_key] = useState('');
-    
+    const [page, setPage] = useState(1)
+    const [data, setData] = useState([])
+
+
+    // pagination setup
+    const resultsPerPage = 3
+    const totalResults = showrecipies.length
+    // pagination change control
+    function onPageChange(p) {
+        setPage(p)
+    }
+    // on page change, load new sliced data
+    // here you would make another server request for new data
+    useEffect(() => {
+        if (showrecipies.length > 0) {
+            setData(showrecipies.slice((page - 1) * resultsPerPage, page * resultsPerPage));
+        }
+    }, [showrecipies, page])
+
+
     const fetchUser = async () => {
         const withdrawRef = query(
             collection(db, "/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes")
@@ -28,10 +60,17 @@ const Fitmerecipies = ({handel_recipe_selection}) => {
         });
 
     }
-    const handleDelete = (id) => {
-        const recipeDocRef = doc(db, "/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes", id);
-        deleteDoc(recipeDocRef);
-console.log(id,"idd")
+    const handleDelete = async (id) => {
+        const recipeDocRef = doc(db, 'Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes', id);
+
+        try {
+            await deleteDoc(recipeDocRef);
+            console.log(id, 'idd');
+            alert('Recipe deleted successfully');
+        } catch (error) {
+            console.error('Error deleting recipe:', error);
+            alert('An error occurred while deleting the recipe');
+        }
     };
     // recipie
     useEffect(() => {
@@ -41,12 +80,23 @@ console.log(id,"idd")
     return (
         <div>
             <h1 className="text-3xl font-semibold py-5"> By FitMe</h1>
-            {showrecipies.map((recipe, index) => (
-                <div>
-                    <Recipiescomp recipe={recipe} kiey={index} recipie_key={recipie_key[index]} handleDelete={handleDelete} handel_recipe_selection={handel_recipe_selection} />
-                </div>
-            ))}
-
+            {data.length > 0 ? (
+                data.map((recipe, index) => (
+                    <div key={index}>
+                        <Recipiescomp recipe={recipe} kiey={index} recipie_key={recipie_key[index]} handleDelete={handleDelete} handel_recipe_selection={handel_recipe_selection} />
+                    </div>
+                ))
+            ) : (
+                <p>No recipe found.</p>
+            )}
+            <TableFooter>
+                <Pagination
+                    totalResults={totalResults}
+                    resultsPerPage={resultsPerPage}
+                    label="Table navigation"
+                    onChange={onPageChange}
+                />
+            </TableFooter>
         </div>
     )
 }

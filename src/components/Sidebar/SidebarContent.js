@@ -27,8 +27,8 @@ function SidebarContent() {
       });
   };
   return (
-    <div className="py-4 text-gray-500 dark:text-gray-400">
-      <a className="ml-6 text-2xl font-bold  dark:text-gray-200 " href="#">
+    <div className="py-4 text-gray-500 ">
+      <a className="ml-6 text-2xl font-bold  " href="#">
          <span className="text-teal-400">Diet</span> Planner
       </a>
       <ul className="mt-6 pt-6">
@@ -40,8 +40,8 @@ function SidebarContent() {
               <NavLink
                 exact
                 to={route.path}
-                className=" inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                activeClassName="text-teal-400 dark:text-teal-200"
+                className=" inline-flex items-center w-full text-sm font-semibold transition-colors duration-150  "
+                activeClassName="text-teal-400"
               >
                 <Route path={route.path} exact={route.exact}>
                   <span

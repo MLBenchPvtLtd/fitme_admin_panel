@@ -49,18 +49,25 @@ function Dashboard() {
   const [recipesByMonth, setRecipesByMonth] = useState("");
   const [userByMonth, setUserByMonth] = useState("");
   const [recipesMonthName, setRecipesMonthName] = useState("");
+
+
+
   // pagination setup
   const resultsPerPage = 10
-  const totalResults = response.length
+  const totalResults = users.length
+
   // pagination change control
   function onPageChange(p) {
     setPage(p)
   }
+
   // on page change, load new sliced data
   // here you would make another server request for new data
   useEffect(() => {
-    setData(response.slice((page - 1) * resultsPerPage, page * resultsPerPage))
-  }, [page])
+    if (users.length > 0) {
+      setData(users.slice((page - 1) * resultsPerPage, page * resultsPerPage));
+    }
+  }, [users,page])
   // testing
 
   const getUsers = async () => {
@@ -83,7 +90,7 @@ function Dashboard() {
   // sort array
 
   const fetchRecipesByMonth = async () => {
-    
+
     try {
       const recipesRef = collection(db, 'recipes');
       const q = query(recipesRef, orderBy('created_at', 'asc'));
@@ -142,8 +149,8 @@ function Dashboard() {
       console.log('Error fetching recipes:', error);
     }
   };
-  
-  
+
+
   const fetchUsersByMonth = async () => {
     try {
       const recipesRef = collection(db, 'Users');
@@ -195,8 +202,8 @@ function Dashboard() {
       setUserByMonth(
         recipesCountArray
       );
-       // Perform data fetching only if the component is still mounted
- 
+      // Perform data fetching only if the component is still mounted
+
       console.log(recipesCountArray, "users")
     } catch (error) {
       console.log('Error fetching recipes:', error);
@@ -245,10 +252,15 @@ function Dashboard() {
 
 
 
+
+
+
+
   return (
     <>
       <PageTitle>Welcome Back </PageTitle>
-
+      <p style={{ color: "#8E8E9B" }}>We’re glad you’re here, let’s get started.</p>
+      
       <div className="App">
 
       </div>
@@ -285,13 +297,13 @@ function Dashboard() {
               </ChartCard>
             )}
          */}
-        {userByMonth !== "" && recipesMonthName !== "" && recipesByMonth !== "" &&(
-          <ChartCard className="max-h-32" title="Bars">
-          <Bar style={{ maxHeight: "200px" }} options={option} data={dataa} />
-          <ChartLegend style={{ maxHeight: "200px" }} legends={barLegends} />
-        </ChartCard>
-  
-)}
+            {userByMonth !== "" && recipesMonthName !== "" && recipesByMonth !== "" && (
+              <ChartCard className="max-h-32" title="Bars">
+                <Bar style={{ maxHeight: "100px" }} options={option} data={dataa} />
+                <ChartLegend style={{ maxHeight: "100px" }} legends={barLegends} />
+              </ChartCard>
+
+            )}
           </div>
 
 
@@ -300,41 +312,42 @@ function Dashboard() {
               <TableHeader>
                 <tr>
                   <TableCell>User</TableCell>
-
                   <TableCell>Phone</TableCell>
                   <TableCell>Age</TableCell>
                   <TableCell>Email</TableCell>
                 </tr>
               </TableHeader>
-              <TableBody>
-                {users.map((user, i) => (
-                  <TableRow key={i} className="bg-slate-200">
-                    <TableCell className="bg-slate-200">
-                      <div className="flex items-center text-sm">
-                        {/* <Avatar className="hidden mr-3 md:block" src={user.name} alt="User image" /> */}
+             
+                <TableBody>
+                  {data.map((user, i) => (
+                    <TableRow key={i} className="">
+                      <TableCell className="">
+                        <div className="flex items-center text-sm">
+                          {/* <Avatar className="hidden mr-3 md:block" src={user.name} alt="User image" /> */}
 
-                        {(user.image_url !== '') && <img className='h-10  w-10 rounded-full mr-2' src={user.image_url} alt="" />}
-                        {(user.image_url === '') && <img className='h-10  w-10 mr-2 rounded-full' src={noprofileimg} alt="" />}
-                        <div>
-                          <p className="font-semibold">{user.user_name}</p>
-                          <p className="text-xs text-gray-600 dark:text-gray-400">{user.user_email}</p>
+                          {(user.image_url !== '') && <img className='h-10  w-10 rounded-full mr-2' src={user.image_url} alt="" />}
+                          {(user.image_url === '') && <img className='h-10  w-10 mr-2 rounded-full' src={noprofileimg} alt="" />}
+                          <div>
+                            <p className="font-semibold">{user.user_name}</p>
+                            <p className="text-xs text-gray-600 ">{user.user_email}</p>
+                          </div>
                         </div>
-                      </div>
-                    </TableCell>
+                      </TableCell>
 
-                    <TableCell>
-                      <Badge >{user.phone}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm"> {user.age}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">{user.user_email}</span>
-                    </TableCell>
+                      <TableCell>
+                        <Badge>{user.phone}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-sm">{user.age}</span>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-sm">{user.user_email}</span>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+            
 
-                  </TableRow>
-                ))}
-              </TableBody>
             </Table>
             <TableFooter>
               <Pagination

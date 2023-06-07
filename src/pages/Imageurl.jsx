@@ -79,17 +79,17 @@ const Imageurl = ({ handleImageChange, handleChange, newrecipe, selected_user_id
                     </select>
 
                     <div className="mt-4 pb-1 ">
-                        <label className="font-medium text-lg" htmlFor=""> Time Required</label>
+                        <label className="font-medium text-lg" htmlFor="">Time Required in Minutes</label>
 
                     </div>
-                    <input  name="makeTime" value={newrecipe.makeTime} onChange={handleChange} type="text" className=" w-11/12 mb-2 px-3 py-2 mt-1 mb-3 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
+                    <input  name="makeTime" value={newrecipe.makeTime} onChange={handleChange} type="number" min="0" className=" w-11/12 mb-2 px-3 py-2 mt-1 mb-3 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
 
 
                     <div className="mt-4 pb-1 ">
                         <label className="font-medium text-lg" htmlFor=""> Category</label>
 
                     </div>
-                    <input  name="category" type="text"  value={newrecipe.category} onChange={handleChange} className=" w-11/12 mb-2 px-3 py-2 mt-1 mb-3 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
+                    <input  name="category" type="text"  value={newrecipe.category} onChange={handleChange}   className=" w-11/12 mb-2 px-3 py-2 mt-1 mb-3 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
 
 
 
@@ -103,14 +103,14 @@ const Imageurl = ({ handleImageChange, handleChange, newrecipe, selected_user_id
                             <div className="mt-2 pb-1 ">
                                 <label className="font-medium text-lg" htmlFor="">Calories</label>
                             </div>
-                            <input  name="calories" value={newrecipe.calories} onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
+                            <input  name="calories" min="0" value={newrecipe.calories} onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
                         </div>
 
                         <div>
                             <div className="mt-2 pb-1 ">
                                 <label className="font-medium text-lg" htmlFor=""> Protiens</label>
                             </div>
-                            <input  name="protenis" value={newrecipe.protenis} onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
+                            <input  name="protenis" min="0" value={newrecipe.protenis} onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
 
                         </div>
 
@@ -118,7 +118,7 @@ const Imageurl = ({ handleImageChange, handleChange, newrecipe, selected_user_id
                             <div className="mt-2 pb-1 ">
                                 <label className="font-medium text-lg" htmlFor=""> Fats</label>
                             </div>
-                            <input  name="fat" value={newrecipe.fat} onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
+                            <input  name="fat" min="0" value={newrecipe.fat} onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
 
                         </div>
                         <div>
@@ -127,7 +127,7 @@ const Imageurl = ({ handleImageChange, handleChange, newrecipe, selected_user_id
                             <div className="mt-2 pb-1 ">
                                 <label className="font-medium text-lg" htmlFor=""> Carbohydrates</label>
                             </div>
-                            <input  name="carbohydrates" value={newrecipe.carbohydrates} onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
+                            <input  name="carbohydrates" min="0" value={newrecipe.carbohydrates} onChange={handleChange} type="number" className=" px-3 py-1 my-1 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
 
                         </div>
                     </div>
@@ -183,7 +183,7 @@ const Imageurl = ({ handleImageChange, handleChange, newrecipe, selected_user_id
                 {/* <button onClick={() => { handlecancel(1) }} className="text-white py-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                     Cancel
                 </button> */}
-                <button type="submit" onClick={add_recipe} style={{ background: "#00A59F" }} className="focus:outline-none py-2 text-white  hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5  mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                <button type="submit" onClick={add_recipe} style={{ background: "#00A59F" }} className="focus:outline-none py-2 text-white  hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5  mb-2 ">
                     Done
                 </button>
             </div>

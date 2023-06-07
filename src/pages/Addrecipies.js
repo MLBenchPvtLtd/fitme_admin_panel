@@ -48,26 +48,33 @@ const Addrecipies = ({ selected_user_id,handlecancel }) => {
   // };
 
   const handleSubmit = () => {
-    console.log(image);
-    const storageRef = ref(storage, "images/" + image.name);
+    if (image) {
+      console.log(image, 'image uploaded');
+      const storageRef = ref(storage, 'images/' + image.name);
   
-    uploadBytes(storageRef, image)
-      .then(() => {
-        getDownloadURL(storageRef)
-          .then((url) => {
-            setUrl(url);
-            console.log(url);
-            
-          })
-          .catch((error) => {
-            console.log(error.message, "error getting the image URL");
-          });
-        setImage(null);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+      uploadBytes(storageRef, image)
+        .then(() => {
+          getDownloadURL(storageRef)
+            .then((url) => {
+              setUrl(url);
+              console.log(url);
+              setImage(null);
+              alert('Image is uploaded');
+            })
+            .catch((error) => {
+              console.log(error.message, 'error getting the image URL');
+              alert('An error occurred while getting the image URL');
+            });
+        })
+        .catch((error) => {
+          console.log(error.message);
+          alert('An error occurred while uploading the image');
+        });
+    } else {
+      alert('Image is not selected');
+    }
   };
+
   return (
     <>
 

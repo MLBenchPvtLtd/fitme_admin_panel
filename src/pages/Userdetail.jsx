@@ -20,8 +20,19 @@ import Userrecpcomp from '../components/recipies/Userrecpcomp'
 import Dailymeal from '../components/users/Dailymeal'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { CanvasJSChart } from 'canvasjs-react-charts'
-
-const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_selection, selected_user_id_selection,selected_recipe,selected_recipe_key }) => {
+import {
+    TableBody,
+    TableContainer,
+    Table,
+    TableHeader,
+    TableCell,
+    TableRow,
+    TableFooter,
+    // Avatar,
+    Badge,
+    Pagination,
+  } from '@windmill/react-ui'
+const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_selection, selected_user_id_selection, selected_recipe, selected_recipe_key }) => {
     const [selected_user_object_edit, set_selected_user_object_edit] = useState(selected_user_object_selection);
     const [chart_data, set_chart_data] = useState()
     const [showrecipies, setShowrecipies] = useState([]);
@@ -29,9 +40,29 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
     const [text, setText] = useState();
     const [usergraph, setUsergraph] = useState();
     const [firstData, setFirstData] = useState(null);
+    const [page, setPage] = useState(1)
+    const [data, setData] = useState([])
     const userCollectionRef = collection(db, 'Users', selected_user_id_selection, 'recipes')
     const usergraphCollectionRef = collection(db, 'Users', selected_user_id_selection, 'goals')
- 
+
+
+      // pagination setup
+  const resultsPerPage = 3
+  const totalResults = showrecipies.length
+
+  // pagination change control
+  function onPageChange(p) {
+    setPage(p)
+  }
+
+  // on page change, load new sliced data
+  // here you would make another server request for new data
+  useEffect(() => {
+    if (showrecipies.length > 0) {
+      setData(showrecipies.slice((page - 1) * resultsPerPage, page * resultsPerPage));
+    }
+  }, [showrecipies,page])
+  // testing
 
     const fetchUser = async () => {
         const withdrawRef = query(
@@ -54,53 +85,48 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
     const fetchUsergraph = async () => {
         const querySnapshot = await getDocs(usergraphCollectionRef);
         const data = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-
         setUsergraph(data);
-
         if (data.length > 0) {
             const firstData = data[0];
-            console.log(firstData);
             // Store the value of 'fats' in the 'fatsValue' state variable
             setFatsValue(firstData);
-
         }
     };
-    const handleDelete = (id) => {
-        const recipeDocRef = doc(userCollectionRef, id);
-        deleteDoc(recipeDocRef);
-    };
-
+ 
 
     useEffect(() => {
         fetchUser();
         fetchUsergraph();
-     
+
     }, []);
+
+    const sum = fatsValue.fats+fatsValue.protein+fatsValue.carbohydrates+fatsValue.calories;
+    const graphtotal = sum.toString().slice(0, 5);
 
     const options = {
         animationEnabled: true,
         title: {
-          text: ""
+            text: ""
         },
         subtitles: [{
-          text: "71% Positive",
-          verticalAlign: "center",
-          fontSize: 24,
-          dockInsidePlotArea: true
+            text: graphtotal,
+            verticalAlign: "center",
+            fontSize: 24,
+            dockInsidePlotArea: true
         }],
         data: [{
-          type: "doughnut",
-          showInLegend: true,
-          indexLabel: "{name}: {y}",
-          yValueFormatString: "#0.##'%'",
-          dataPoints: [
-            { name: "Fat", y: fatsValue.fats },
-            { name: "Protein", y: fatsValue.protein },
-            { name: "Carbohydrates", y: fatsValue.carbohydrates },
-            { name: "Calories", y: fatsValue.calories }
-          ]
+            type: "doughnut",
+            showInLegend: true,
+            indexLabel: "{name}: {y}",
+            yValueFormatString: "#0.##'%'",
+            dataPoints: [
+                { name: "Fat", y: fatsValue.fats },
+                { name: "Protein", y: fatsValue.protein },
+                { name: "Carbohydrates", y: fatsValue.carbohydrates },
+                { name: "Calories", y: fatsValue.calories }
+            ]
         }]
-      };
+    };
 
 
 
@@ -154,12 +180,23 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
                     {/* recpies */}
                     <h1 className='font-bold my-5'>My Recipies</h1>
                     <div className='pb-5'>
-                        {showrecipies.map((recipe, index) => (
-                            <div>
-                                <Userrecpcomp recipe={recipe} kiey={index} recipie_key={recipie_key[index]} handleDelete={handleDelete} handel_recipe_selection={handel_recipe_selection} />
-                            </div>
-                        ))}
-
+                        {data.length > 0 ? (
+                            data.map((recipe, index) => (
+                                <div key={index}>
+                                    <Userrecpcomp recipe={recipe} selected_user_id_selection={selected_user_id_selection} kiey={index} recipie_key={recipie_key[index]} handel_recipe_selection={handel_recipe_selection} />
+                                </div>
+                            ))
+                        ) : (
+                            <p>No recipe found.</p>
+                        )}
+                         <TableFooter>
+              <Pagination
+                totalResults={totalResults}
+                resultsPerPage={resultsPerPage}
+                label="Table navigation"
+                onChange={onPageChange}
+              />
+            </TableFooter>
                     </div>
 
                 </div>
@@ -179,13 +216,13 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
                                 <p className="font-medium">All Calories Left</p>
                                 <p className="text-base"><span className='font-medium'>595/</span> <span className='#8E8E8E'>1455</span></p>
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-5 dark:bg-gray-700">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-5 ">
                                 <div class=" h-2.5 rounded-full" style={{ width: "45%", background: "#00A7A1" }}>.</div>
                             </div>
                         </div>
                     </div>
                     {/* daily meal */}
-                    <Dailymeal />
+                    <Dailymeal selected_user_id_selection={selected_user_id_selection} />
                 </div>
             </div>
         </>

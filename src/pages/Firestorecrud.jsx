@@ -69,7 +69,7 @@ const Firestorecrud = () => {
                                         <img className='h-10  w-10 mr-2' src={user.image_url} alt="" />
                                         <div>
                                             <p className="font-semibold">{user.user_name}</p>
-                                            <p className="text-xs text-gray-600 dark:text-gray-400">{user.user_email}</p>
+                                            <p className="text-xs text-gray-600 ">{user.user_email}</p>
                                         </div>
                                     </div>
                                 </TableCell>

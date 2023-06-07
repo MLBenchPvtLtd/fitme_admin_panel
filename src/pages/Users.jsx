@@ -27,7 +27,7 @@ const Users = ({ handel_users_selection, handleDelete }) => {
 
   // pagination setup
   const resultsPerPage = 10
-  const totalResults = response.length
+  const totalResults = users.length
   // pagination change control
   function onPageChange(p) {
     setPage(p)
@@ -35,8 +35,10 @@ const Users = ({ handel_users_selection, handleDelete }) => {
   // on page change, load new sliced data
   // here you would make another server request for new data
   useEffect(() => {
-    setData(response.slice((page - 1) * resultsPerPage, page * resultsPerPage))
-  }, [page])
+    if (users.length > 0) {
+      setData(users.slice((page - 1) * resultsPerPage, page * resultsPerPage));
+    }
+  }, [users,page])
 
   // fetching data from firebase
   const fetchUser = async () => {
@@ -70,7 +72,7 @@ const Users = ({ handel_users_selection, handleDelete }) => {
               </tr>
             </TableHeader>
             <TableBody>
-              {users.map((user, i) => (
+              {data.map((user, i) => (
                 <TableRow key={i}>
                   <TableCell>
                     <div className="flex items-center text-sm">
@@ -80,7 +82,7 @@ const Users = ({ handel_users_selection, handleDelete }) => {
                    
                       <div>
                         <p className="text-lg font-semibold">{user.user_name}</p>
-                        <p className="text-sm font-normal text-gray-600 dark:text-gray-400">{user.user_email}</p>
+                        <p className="text-sm font-normal text-gray-600 ">{user.user_email}</p>
                       </div>
                     </div>
                   </TableCell>

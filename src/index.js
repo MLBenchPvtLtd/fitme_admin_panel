@@ -13,13 +13,16 @@ import * as serviceWorker from './serviceWorker'
 // }
 
 ReactDOM.render(
-  <SidebarProvider>
+
+         <SidebarProvider>
     <Suspense fallback={<ThemedSuspense />}>
-      <Windmill usePreferences>
+      <Windmill >
         <App />
       </Windmill>
     </Suspense>
   </SidebarProvider>,
+    
+ 
   document.getElementById('root')
 )
 

@@ -20,11 +20,11 @@ function usePrevious(theme) {
  */
 function useStorageTheme(key) {
   const userPreference =
-    !!window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    !!window.matchMedia && window.matchMedia('(prefers-color-scheme: )').matches
 
   const [theme, setTheme] = useState(
     // use stored theme; fallback to user preference
-    localStorage.getItem(key) || userPreference
+   
   )
 
   // update stored theme
@@ -40,7 +40,7 @@ export const ThemeContext = React.createContext()
 
 // create context provider
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useStorageTheme('theme')
+  const [theme, setTheme] = useStorageTheme()
 
   // update root element class on theme change
   const oldTheme = usePrevious(theme)
@@ -50,7 +50,7 @@ export const ThemeProvider = ({ children }) => {
   }, [theme, oldTheme])
 
   function toggleTheme() {
-    if (theme === 'light') setTheme('dark')
+    if (theme === 'light') setTheme('light')
     else setTheme('light')
   }
 
