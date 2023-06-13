@@ -30,7 +30,14 @@ const Recipiescomp = ({ recipe, recipie_key, kiey, handleDelete, handel_recipe_s
             </div>
             <div className="pl-5 xl:col-span-2">
               <h2 className="font-semibold text-base rounded-lg">{recipe.name}</h2>
-              <p className="font-normal text-xs my-1" style={{ color: "#747474" }}>Beef/mutton mignon,</p>
+              {recipe.ingredients && (
+                <ul className="flex">
+                  {recipe.ingredients.map((ingredient, index) => (
+                    <p className="font-normal text-xs my-1" key={index} style={{ color: "#747474" }}>{ingredient.label},</p>
+                  ))}
+                </ul>
+              )}
+
               <div className="flex pb-3">
                 <p className="pr-3 text-xs font-semibold" >category <br /> <span style={{ color: "#747474" }}>{recipe.category}</span></p>
                 <p className="pr-3 text-xs font-semibold" >Difficulty <br /> <span style={{ color: "#747474" }}>{recipe.make_difficulity} </span></p>
@@ -48,7 +55,7 @@ const Recipiescomp = ({ recipe, recipie_key, kiey, handleDelete, handel_recipe_s
 
 
             <div><button className="mx-3 text-sm" style={{ color: "#00A7A1" }} onClick={() => handel_recipe_selection(recipe, kiey, recipie_key)}>Edit</button></div>
-            
+
             <div>
               <button className="mx-2 text-sm" style={{ color: "#ED6366" }} onClick={openModal}  >Delete</button>
             </div>
@@ -77,7 +84,7 @@ const Recipiescomp = ({ recipe, recipie_key, kiey, handleDelete, handel_recipe_s
                 </div>
               </ModalFooter>
             </Modal>
-            
+
           </div>
         </div>
 

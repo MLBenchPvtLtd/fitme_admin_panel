@@ -5,14 +5,108 @@ import { db } from '../firebase'
 import { doc, updateDoc } from 'firebase/firestore'
 import img from '../assets/img/upload.png'
 const Hotels = [
-    { value: 1, label: "Coral Beach Maldives" },
-    { value: 2, label: "Ilaa Beach Maldives" },
-    { value: 3, label: "Finolhu" },
-    { value: 4, label: "Arena" },
-    { value: 5, label: "Kaani Beach Hotel" },
+    { value: 1, label: "Cucumber" },
+    { value: 2, label: "Onion" },
+    { value: 3, label: "Red Onion" },
+    { value: 4, label: "Garlic" },
+    { value: 5, label: "Carrot" },
+    { value: 6, label: "Red Cabbage" },
+    { value: 7, label: "White Cabbage" },
+    { value: 8, label: "Radish" },
+    { value: 9, label: "Eggplant" },
+    { value: 10, label: "Mushroom" },
+    { value: 11, label: "Artichoke" },
+    { value: 12, label: "Corn" },
+    { value: 13, label: "Broccoli" },
+    { value: 14, label: "Cauliflower" },
+    { value: 15, label: "Celery" },
+    { value: 16, label: "Red Chili" },
+    { value: 17, label: "Green Chili" },
+    { value: 18, label: "Sweet Potato" },
+    { value: 19, label: "Asparagus" },
+    { value: 20, label: "Pumpkin" },
+    { value: 21, label: "Fennel" },
+    { value: 22, label: "Spring Onion" },
+    { value: 23, label: "Turnip" },
+    { value: 24, label: "Lettuce" },
+    { value: 25, label: "Zucchini" },
+    { value: 26, label: "Brussels Sprout" },
+    { value: 27, label: "Tomato" },
+    { value: 28, label: "Potato" },
+    { value: 29, label: "Pea" },
+    { value: 30, label: "Spinach" },
+    { value: 31, label: "Beetroot" },
+    { value: 32, label: "Capsicum" },
+    { value: 33, label: "Leek" },
+    { value: 34, label: "Ginger" },
+    { value: 35, label: "Squash" },
+    { value: 36, label: "Coriander" },
+    { value: 37, label: "Kale" },
+    { value: 38, label: "Taro" },
+    { value: 39, label: "Apple" },
+    { value: 40, label: "Watermelon" },
+    { value: 41, label: "Orange" },
+    { value: 42, label: "Pear" },
+    { value: 43, label: "Strawberry" },
+    { value: 44, label: "Grape" },
+    { value: 45, label: "Plum" },
+    { value: 46, label: "Mango" },
+    { value: 47, label: "Blueberry" },
+    { value: 48, label: "Papaya" },
+    { value: 49, label: "Apricot" },
+    { value: 50, label: "Mandarin" },
+    { value: 51, label: "Banana" },
+    { value: 52, label: "Grapefruit" },
+    { value: 53, label: "Lemon" },
+    { value: 54, label: "Lime" },
+    { value: 55, label: "Pineapple" },
+    { value: 56, label: "Jackfruit" },
+    { value: 57, label: "Melon" },
+    { value: 58, label: "Coconut" },
+    { value: 59, label: "Avocado" },
+    { value: 60, label: "Peach" },
+    { value: 61, label: "Kiwi" },
+    { value: 62, label: "Blackcurrant" },
+    { value: 63, label: "Blackberry" },
+    { value: 64, label: "Cherry" },
+    { value: 65, label: "Fig" },
+    { value: 66, label: "Lychee" },
+    { value: 67, label: "Nectarine" },
+    { value: 68, label: "Passionfruit" },
+    { value: 69, label: "Quince" },
+    { value: 70, label: "Raspberry" },
+    { value: 71, label: "Tangerine" },
+    { value: 72, label: "Pomegranate" },
+    { value: 73, label: "Mulberry" },
+    { value: 74, label: "Starfruit" },
+    { value: 75, label: "Guava" },
+    { value: 76, label: "Pomelo" },
+    { value: 77, label: "Cranberry" },
+    { value: 78, label: "Rock Melon" },
+    { value: 79, label: "Dragon Fruit" },
+    { value: 80, label: "Rambutan" },
+    { value: 81, label: "Beef" },
+    { value: 82, label: "Chicken" },
+    { value: 83, label: "Lamb" },
+    { value: 84, label: "Veal" },
+    { value: 85, label: "Fish" },
+    { value: 86, label: "Prawns" },
+    { value: 87, label: "Pork" },
+    { value: 88, label: "Bacon" },
+    { value: 89, label: "Ham" },
+    { value: 90, label: "Kangaroo" },
+    { value: 91, label: "Duck" },
+    { value: 92, label: "Turkey" },
+    { value: 93, label: "Mussels" },
+    { value: 94, label: "Oysters" },
+    { value: 95, label: "Scallops" },
+    { value: 96, label: "Clams" },
+    { value: 97, label: "Tofu" },
+    { value: 98, label: "Mutton" },
+    { value: 99, label: "Venison" }
 ];
 
-const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, img_url, handlecancel, handleSubmit, handleImageChange }) => {
+const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, img_url, handlecancel, handleSubmit, handleImageChange, loading }) => {
 
     const [selectedOptions, setSelectedOptions] = useState(null);
     const [printdetails, setPrintdetails] = useState(selected_recipe);
@@ -23,6 +117,14 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
     useEffect(() => {
     }, []);
 
+
+    const handleIngredientsChange = (selectedOptions) => {
+        setSelectedOptions(selectedOptions);
+        setPrintdetails((prevRecipe) => ({
+            ...prevRecipe,
+            ingredients: selectedOptions,
+        }));
+    };
     const handleChange = (e) => {
         const value = e.target.value;
         setPrintdetails({
@@ -32,38 +134,38 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
         console.log(printdetails)
     };
 
-  
-     
+
+
     const update_recipe = () => {
 
         const recipeDocRef = doc(
-          db,
-          `/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes/${selected_recipe_key}`
+            db,
+            `/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes/${selected_recipe_key}`
         );
         const updatedDetails = {
-          ...printdetails,
-          img_url: img_url
+            ...printdetails,
+            img_url: img_url
         };
         updateDoc(recipeDocRef, updatedDetails)
-          .then(() => {
-            console.log(updatedDetails, "details");
-            alert("Update successful"); // Show alert message
-          })
-          .catch((error) => {
-            console.error("Error updating document: ", error);
-            alert("Update failed"); // Show alert message
-          });
-      };
+            .then(() => {
+                console.log(updatedDetails, "details");
+                alert("Update successful"); // Show alert message
+            })
+            .catch((error) => {
+                console.error("Error updating document: ", error);
+                alert("Update failed"); // Show alert message
+            });
+    };
 
 
 
-    
+
     // const history = useHistory();
 
     // const add_recipe = async (e) => {
     //   e.preventDefault();
     //   const uuid = uuidv4();
-    
+
     //   if ( printdetails !== "") {
     //     printdetails.img_url = img_url;
     //     const recipeDocRef = doc(db, 'Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes', uuid);
@@ -71,7 +173,7 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
     //       await setDoc(recipeDocRef, printdetails);
     //       console.log('Recipe added successfully');
     //       console.log(img_url);
-    
+
     //       // Navigate to the Fitmerecipe component
     //       history.push('/app/recipies');
     //     } catch (error) {
@@ -96,10 +198,17 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
 
                     <h3 className="mt-6  mb-4 font-medium text-lg "> Ingredients of Recipie</h3>
                     <div className="flex w-11/12 p5-1 mb-2 flex-wrap items-center lg:justify-between justify-center">
-                        <div className=" w-full py-2 ">
-                            <Select name="ingredients" className="py-2" options={Hotels} isMulti />
+                        <div className="w-full py-2">
+                            <Select
+                                name="ingredients"
+                                className="py-2"
+                                options={Hotels}
+                                onChange={handleIngredientsChange}
+                                value={printdetails.ingredients}
+                                isMulti
+                                isSearchable // Enable search functionality
+                            />
                         </div>
-
                     </div>
 
                     <div className="mt-4 pb-1 ">
@@ -108,10 +217,9 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
                     </div>
                     <select name="make_difficulity" placeholder="Select" value={printdetails.make_difficulity} onChange={handleChange} id="countries" className="w-11/12 mb-2 px-3 py-2 mt-1 mb-3 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400">
                         <option selected></option>
-                        <option value="US"> Easy </option>
-                        <option value="CA">Medium</option>
-                        <option value="FR">Hard</option>
-
+                        <option value="Easy"> Easy </option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
                     </select>
 
                     <div className="mt-4 pb-1 ">
@@ -190,7 +298,7 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
                     <textarea name="details" value={printdetails.details} onChange={handleChange} id="message" rows="4" className="w-11/12 px-3 py-1 my-1 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="Write your thoughts here..."></textarea>
 
 
-
+                    {loading && <div className="loader">Loading...</div>}
                     <div className="py-2">
                         <div className="extraOutline p-4 bg-white w-max bg-whtie m-auto rounded-lg">
                             <div className="file_upload p-5 relative border-4 border-dotted border-gray-300 rounded-lg text-center" >
@@ -230,7 +338,7 @@ const Recipieimage = ({ selected_recipe, selected_user_id, selected_recipe_key, 
 
 
             {/* edit recipie */}
-          
+
         </>
     )
 }

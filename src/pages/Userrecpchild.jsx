@@ -23,6 +23,13 @@ const Userrecpchild = ({ selected_recipe, selected_user_id, selected_recipe_key,
     useEffect(() => {
     }, []);
 
+    const handleIngredientsChange = (selectedOptions) => {
+        setSelectedOptions(selectedOptions);
+        setPrintdetails((prevRecipe) => ({
+          ...prevRecipe,
+          ingredients: selectedOptions,
+        }));
+      };
     const handleChange = (e) => {
         const value = e.target.value;
         setPrintdetails({
@@ -59,7 +66,7 @@ const Userrecpchild = ({ selected_recipe, selected_user_id, selected_recipe_key,
                     <h3 className="mt-6  mb-4 font-medium text-lg "> Ingredients of Recipie</h3>
                     <div className="flex w-11/12 p5-1 mb-2 flex-wrap items-center lg:justify-between justify-center">
                         <div className=" w-full py-2 ">
-                            <Select name="ingredients" className="py-2" options={Hotels} isMulti />
+                        <Select name="ingredients" className="py-2" options={Hotels} onChange={handleIngredientsChange} value={printdetails.ingredients} isMulti />
                         </div>
 
                     </div>
@@ -70,9 +77,9 @@ const Userrecpchild = ({ selected_recipe, selected_user_id, selected_recipe_key,
                     </div>
                     <select name="make_difficulity" placeholder="Select" value={printdetails.make_difficulity} onChange={handleChange} id="countries" className="w-11/12 mb-2 px-3 py-2 mt-1 mb-3 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400">
                         <option selected></option>
-                        <option value="US"> Easy </option>
-                        <option value="CA">Medium</option>
-                        <option value="FR">Hard</option>
+                        <option value="Easy"> Easy </option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
 
                     </select>
 

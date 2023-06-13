@@ -38,7 +38,7 @@ const Users = ({ handel_users_selection, handleDelete }) => {
     if (users.length > 0) {
       setData(users.slice((page - 1) * resultsPerPage, page * resultsPerPage));
     }
-  }, [users,page])
+  }, [users, page])
 
   // fetching data from firebase
   const fetchUser = async () => {
@@ -55,7 +55,7 @@ const Users = ({ handel_users_selection, handleDelete }) => {
   // const handle_id = (id) => {
   // console.log(handel_users_id,"prop")
   // }
- 
+
   return (
     <>
       <div className=" ">
@@ -77,9 +77,9 @@ const Users = ({ handel_users_selection, handleDelete }) => {
                   <TableCell>
                     <div className="flex items-center text-sm">
                       {/* <Avatar className="hidden mr-3 md:block" src={user.name} alt="User image" /> */}
-                      {(user.image_url  !== '' ) &&      <img className='h-10  w-10 mr-2 rounded-full' src={user.image_url} alt="" />}
-                      {(user.image_url  === '' ) &&      <img className='h-10  w-10 mr-2 rounded-full' src={noprofileimg} alt="" />}
-                   
+                      {(user.image_url !== '') && <img className='h-10  w-10 mr-2 rounded-full' src={user.image_url} alt="" />}
+                      {(user.image_url === '') && <img className='h-10  w-10 mr-2 rounded-full' src={noprofileimg} alt="" />}
+
                       <div>
                         <p className="text-lg font-semibold">{user.user_name}</p>
                         <p className="text-sm font-normal text-gray-600 ">{user.user_email}</p>
@@ -105,14 +105,19 @@ const Users = ({ handel_users_selection, handleDelete }) => {
               ))}
             </TableBody>
           </Table>
-          <TableFooter>
-            <Pagination
-              totalResults={totalResults}
-              resultsPerPage={resultsPerPage}
-              label="Table navigation"
-              onChange={onPageChange}
-            />
-          </TableFooter>
+          {data.length > 0 ? (
+            <TableFooter>
+              <Pagination
+                totalResults={totalResults}
+                resultsPerPage={resultsPerPage}
+                label="Table navigation"
+                onChange={onPageChange}
+              />
+            </TableFooter>
+          ) : (
+            <p></p>
+          )}
+
         </TableContainer>
 
       </div>

@@ -31,7 +31,7 @@ import {
     // Avatar,
     Badge,
     Pagination,
-  } from '@windmill/react-ui'
+} from '@windmill/react-ui'
 const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_selection, selected_user_id_selection, selected_recipe, selected_recipe_key }) => {
     const [selected_user_object_edit, set_selected_user_object_edit] = useState(selected_user_object_selection);
     const [chart_data, set_chart_data] = useState()
@@ -46,23 +46,23 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
     const usergraphCollectionRef = collection(db, 'Users', selected_user_id_selection, 'goals')
 
 
-      // pagination setup
-  const resultsPerPage = 3
-  const totalResults = showrecipies.length
+    // pagination setup
+    const resultsPerPage = 3
+    const totalResults = showrecipies.length
 
-  // pagination change control
-  function onPageChange(p) {
-    setPage(p)
-  }
-
-  // on page change, load new sliced data
-  // here you would make another server request for new data
-  useEffect(() => {
-    if (showrecipies.length > 0) {
-      setData(showrecipies.slice((page - 1) * resultsPerPage, page * resultsPerPage));
+    // pagination change control
+    function onPageChange(p) {
+        setPage(p)
     }
-  }, [showrecipies,page])
-  // testing
+
+    // on page change, load new sliced data
+    // here you would make another server request for new data
+    useEffect(() => {
+        if (showrecipies.length > 0) {
+            setData(showrecipies.slice((page - 1) * resultsPerPage, page * resultsPerPage));
+        }
+    }, [showrecipies, page])
+    // testing
 
     const fetchUser = async () => {
         const withdrawRef = query(
@@ -92,7 +92,7 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
             setFatsValue(firstData);
         }
     };
- 
+
 
     useEffect(() => {
         fetchUser();
@@ -100,7 +100,7 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
 
     }, []);
 
-    const sum = fatsValue.fats+fatsValue.protein+fatsValue.carbohydrates+fatsValue.calories;
+    const sum = fatsValue.fats + fatsValue.protein + fatsValue.carbohydrates + fatsValue.calories;
     const graphtotal = sum.toString().slice(0, 5);
 
     const options = {
@@ -109,7 +109,7 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
             text: ""
         },
         subtitles: [{
-            text: graphtotal,
+            text: "100%",
             verticalAlign: "center",
             fontSize: 24,
             dockInsidePlotArea: true
@@ -120,19 +120,43 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
             indexLabel: "{name}: {y}",
             yValueFormatString: "#0.##'%'",
             dataPoints: [
-                { name: "Fat", y: fatsValue.fats },
-                { name: "Protein", y: fatsValue.protein },
-                { name: "Carbohydrates", y: fatsValue.carbohydrates },
-                { name: "Calories", y: fatsValue.calories }
+                { name: "Fat", y: fatsValue.fats, color: "#FD1736" }, // Customize the color here
+                { name: "Protein", y: fatsValue.protein, color: "#FEC539" }, // Customize the color here
+                { name: "Carbohydrates", y: fatsValue.carbohydrates, color: "#32C459" }, // Customize the color here
+                { name: "Calories", y: fatsValue.calories, color: "#4E47C9" } // Customize the color here
+
             ]
         }]
     };
 
+    const options2 = {
+        animationEnabled: true,
+        title: {
+            text: ""
+        },
+        subtitles: [{
+            text: "100%",
+            verticalAlign: "center",
+            fontSize: 24,
+            dockInsidePlotArea: true
+        }],
+        data: [{
+            type: "doughnut",
+            showInLegend: true,
+            indexLabel: "{name}: {y}",
+            yValueFormatString: "#0.##'%'",
+            dataPoints: [
+                { name: "Fat", y: 0.0001, color: "#FD1736" }, // Customize the color here
+                { name: "Protein", y: 0.0001, color: "#FEC539" }, // Customize the color here
+                { name: "Carbohydrates", y: 0.0001, color: "#32C459" }, // Customize the color here
+                { name: "Calories", y: 0.0001, color: "#4E47C9" } // Customize the color here
 
+            ]
+        }]
+    };
 
     return (
         <>
-
 
             <div className=" py-5 items-end  w-11/12">
                 <button onClick={() => { handleback(1) }} className="text-black py-2">
@@ -150,8 +174,6 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
                         {/* left */}
                         <div className="text-center" >
                             <div className="object-center text-center">
-
-
                                 {(selected_user_object_selection.image_url !== '') && <img class="w-200 h-200 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500 " src={selected_user_object_selection.image_url} alt="Bordered avatar " style={{ marginLeft: "20%", width: "60%" }} />}
                                 {(selected_user_object_selection.image_url === '') && <img class="w-200 h-200 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500 " style={{ marginLeft: "20%", width: "60%" }} src={noprofileimg} alt="" />}
                             </div>
@@ -189,14 +211,20 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
                         ) : (
                             <p>No recipe found.</p>
                         )}
-                         <TableFooter>
-              <Pagination
-                totalResults={totalResults}
-                resultsPerPage={resultsPerPage}
-                label="Table navigation"
-                onChange={onPageChange}
-              />
-            </TableFooter>
+
+                        {data.length > 0 ? (
+                            <TableFooter>
+                                <Pagination
+                                    totalResults={totalResults}
+                                    resultsPerPage={resultsPerPage}
+                                    label="Table navigation"
+                                    onChange={onPageChange}
+                                />
+                            </TableFooter>
+                        ) : (
+                            <p></p>
+                        )}
+
                     </div>
 
                 </div>
@@ -209,7 +237,9 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
                             <div className="">
 
                                 <div style={{ width: '100%', }}>
-                                    <CanvasJSChart options={options} />
+                                
+                                {(fatsValue !== "") && <CanvasJSChart options={options} />}
+                                {(fatsValue == "") && <CanvasJSChart options={options2} />}
                                 </div>
                             </div>
                             <div className="flex justify-between my-1">

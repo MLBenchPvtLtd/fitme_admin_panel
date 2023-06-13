@@ -14,6 +14,7 @@ const Userrecpcomp = ({ recipe, recipie_key, kiey,selected_user_id_selection, ha
             await deleteDoc(recipeDocRef);
             console.log(id, 'idd');
             alert('Recipe deleted successfully');
+            window.location.reload(); // Refresh the page
         } catch (error) {
             console.error('Error deleting recipe:', error);
             alert('An error occurred while deleting the recipe');
@@ -69,7 +70,13 @@ function closeModal() {
             <div><img style={{ width: "100%", minWidth: "150px", maxWidth: "136px", maxHeight: "140px", }} src={recipe.img_url} alt="" /></div>
             <div className="pl-5 xl:col-span-2">
               <h2 className="font-semibold text-base rounded-lg">{recipe.name}</h2>
-              <p className="font-normal text-xs my-1" style={{ color: "#747474" }}>Beef/mutton mignon,</p>
+              {recipe.ingredients && (
+                <ul className="flex">
+                  {recipe.ingredients.map((ingredient, index) => (
+                    <p className="font-normal text-xs my-1" key={index} style={{ color: "#747474" }}>{ingredient.label}, </p>
+                  ))}
+                </ul>
+              )}
               <div className="flex pb-3">
                 <p className="pr-3 text-xs font-semibold" >category <br /> <span style={{ color: "#747474" }}>{recipe.category}</span></p>
                 <p className="pr-3 text-xs font-semibold" >Difficulty <br /> <span style={{ color: "#747474" }}>{recipe.make_difficulity} </span></p>

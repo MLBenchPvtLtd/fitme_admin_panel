@@ -67,7 +67,7 @@ function Dashboard() {
     if (users.length > 0) {
       setData(users.slice((page - 1) * resultsPerPage, page * resultsPerPage));
     }
-  }, [users,page])
+  }, [users, page])
   // testing
 
   const getUsers = async () => {
@@ -260,7 +260,7 @@ function Dashboard() {
     <>
       <PageTitle>Welcome Back </PageTitle>
       <p style={{ color: "#8E8E9B" }}>We’re glad you’re here, let’s get started.</p>
-      
+
       <div className="App">
 
       </div>
@@ -317,46 +317,51 @@ function Dashboard() {
                   <TableCell>Email</TableCell>
                 </tr>
               </TableHeader>
-             
-                <TableBody>
-                  {data.map((user, i) => (
-                    <TableRow key={i} className="">
-                      <TableCell className="">
-                        <div className="flex items-center text-sm">
-                          {/* <Avatar className="hidden mr-3 md:block" src={user.name} alt="User image" /> */}
 
-                          {(user.image_url !== '') && <img className='h-10  w-10 rounded-full mr-2' src={user.image_url} alt="" />}
-                          {(user.image_url === '') && <img className='h-10  w-10 mr-2 rounded-full' src={noprofileimg} alt="" />}
-                          <div>
-                            <p className="font-semibold">{user.user_name}</p>
-                            <p className="text-xs text-gray-600 ">{user.user_email}</p>
-                          </div>
+              <TableBody>
+                {data.map((user, i) => (
+                  <TableRow key={i} className="">
+                    <TableCell className="">
+                      <div className="flex items-center text-sm">
+                        {/* <Avatar className="hidden mr-3 md:block" src={user.name} alt="User image" /> */}
+
+                        {(user.image_url !== '') && <img className='h-10  w-10 rounded-full mr-2' src={user.image_url} alt="" />}
+                        {(user.image_url === '') && <img className='h-10  w-10 mr-2 rounded-full' src={noprofileimg} alt="" />}
+                        <div>
+                          <p className="font-semibold">{user.user_name}</p>
+                          <p className="text-xs text-gray-600 ">{user.user_email}</p>
                         </div>
-                      </TableCell>
+                      </div>
+                    </TableCell>
 
-                      <TableCell>
-                        <Badge>{user.phone}</Badge>
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-sm">{user.age}</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-sm">{user.user_email}</span>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-            
+                    <TableCell>
+                      <Badge>{user.phone}</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm">{user.age}</span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm">{user.user_email}</span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+
 
             </Table>
-            <TableFooter>
-              <Pagination
-                totalResults={totalResults}
-                resultsPerPage={resultsPerPage}
-                label="Table navigation"
-                onChange={onPageChange}
-              />
-            </TableFooter>
+            {data.length > 0 ? (
+              <TableFooter>
+                <Pagination
+                  totalResults={totalResults}
+                  resultsPerPage={resultsPerPage}
+                  label="Table navigation"
+                  onChange={onPageChange}
+                />
+              </TableFooter>
+            ) : (
+              <p></p>
+            )}
+
           </TableContainer>
 
 

@@ -45,39 +45,56 @@ const RecipeDetail = ({ selected_recipe, selected_user_id, selected_recipe_key, 
     //       });
     //   };
     
-const handleSubmit = () => {
-  console.log(image);
-  const storageRef = ref(storage, "images/" + image.name);
 
-  uploadBytes(storageRef, image)
-    .then(() => {
-      getDownloadURL(storageRef)
-        .then((url) => {
-          setUrl(url);
-          console.log(url);
-
-          // Save the download URL to Firestore
-          const recipeDocRef = doc(db,  `/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes/${selected_recipe_key}`);
-          setDoc(recipeDocRef, { img_url: url }, { merge: true })
-            .then(() => {
-              console.log('Image URL saved to Firestore');
+    const [loading, setLoading] = useState(false);
+  
+    const handleSubmit = () => {
+      setLoading(true);
+      console.log(image);
+      const storageRef = ref(storage, "images/" + image.name);
+  
+      uploadBytes(storageRef, image)
+        .then(() => {
+          getDownloadURL(storageRef)
+            .then((url) => {
+              setUrl(url);
+              console.log(url);
+  
+              // Save the download URL to Firestore
+              const recipeDocRef = doc(db,  `/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes/${selected_recipe_key}`);
+              setDoc(recipeDocRef, { img_url: url }, { merge: true })
+                .then(() => {
+                  console.log('Image URL saved to Firestore');
+                  setLoading(false);
+                  showAlert('Image uploaded successfully!');
+                })
+                .catch((error) => {
+                  console.log(error.message, 'Error saving image URL to Firestore');
+                  setLoading(false);
+                  showAlert('Error saving image URL to Firestore');
+                });
             })
             .catch((error) => {
-              console.log(error.message, 'Error saving image URL to Firestore');
+              console.log(error.message, "error getting the image URL");
+              setLoading(false);
+              showAlert('Error getting the image URL');
             });
+          setImage(null);
         })
         .catch((error) => {
-          console.log(error.message, "error getting the image URL");
+          console.log(error.message);
+          setLoading(false);
+          showAlert('Error uploading the image');
         });
-      setImage(null);
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
+    };
+  
+    const showAlert = (message) => {
+      alert(message);
+      // You can also use a custom alert component to display the message in a more styled way
+    };
   return (
     <>
-      <Recipieimage img_url={img_url} selected_user_id={selected_user_id} handlecancel={handlecancel} selected_recipe={selected_recipe} selected_recipe_key={selected_recipe_key} handleImageChange={handleImageChange} handleSubmit={handleSubmit} />
+      <Recipieimage img_url={img_url} loading={loading} selected_user_id={selected_user_id} handlecancel={handlecancel} selected_recipe={selected_recipe} selected_recipe_key={selected_recipe_key} handleImageChange={handleImageChange} handleSubmit={handleSubmit} />
     </>
 
   )

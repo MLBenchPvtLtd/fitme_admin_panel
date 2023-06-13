@@ -141,15 +141,6 @@ function Recipies({ handel_user_selection }) {
 
         </Table>
         <TableFooter>
-
-
-
-
-
-
-
-
-
           <Pagination
             totalResults={totalResults}
             resultsPerPage={resultsPerPage}

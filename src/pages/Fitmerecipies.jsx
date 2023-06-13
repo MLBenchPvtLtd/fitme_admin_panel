@@ -62,16 +62,17 @@ const Fitmerecipies = ({ handel_recipe_selection }) => {
     }
     const handleDelete = async (id) => {
         const recipeDocRef = doc(db, 'Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes', id);
-
+      
         try {
-            await deleteDoc(recipeDocRef);
-            console.log(id, 'idd');
-            alert('Recipe deleted successfully');
+          await deleteDoc(recipeDocRef);
+          console.log(id, 'idd');
+          alert('Recipe deleted successfully');
+          window.location.reload(); // Refresh the page
         } catch (error) {
-            console.error('Error deleting recipe:', error);
-            alert('An error occurred while deleting the recipe');
+          console.error('Error deleting recipe:', error);
+          alert('An error occurred while deleting the recipe');
         }
-    };
+      };
     // recipie
     useEffect(() => {
         fetchUser();
@@ -89,14 +90,19 @@ const Fitmerecipies = ({ handel_recipe_selection }) => {
             ) : (
                 <p>No recipe found.</p>
             )}
-            <TableFooter>
-                <Pagination
-                    totalResults={totalResults}
-                    resultsPerPage={resultsPerPage}
-                    label="Table navigation"
-                    onChange={onPageChange}
-                />
-            </TableFooter>
+            {data.length > 0 ? (
+                <TableFooter>
+                    <Pagination
+                        totalResults={totalResults}
+                        resultsPerPage={resultsPerPage}
+                        label="Table navigation"
+                        onChange={onPageChange}
+                    />
+                </TableFooter>
+            ) : (
+                <p></p>
+            )}
+
         </div>
     )
 }

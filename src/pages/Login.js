@@ -56,8 +56,8 @@ function Login() {
           <main className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
          
             <div className="w-full">
-            <h1 className='text-6xl font-bold' style={{marginBottom:"10%",color:"#009D97",fontFamily:"Nunito"}}>FitMe</h1>
-              <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-700">Login</h1>
+            <h1 className='text-6xl font-bold' style={{marginBottom:"10%",color:"#009D97",fontFamily:"'nunito', 'sans-serif'"}}>FitMe</h1>
+              <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-700" >Login</h1>
               <form onSubmit={onLogin}>
                 <Label>
                   <span className='font-semibold'>Email</span>
