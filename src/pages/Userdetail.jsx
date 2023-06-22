@@ -46,24 +46,30 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
     const usergraphCollectionRef = collection(db, 'Users', selected_user_id_selection, 'goals')
 
 
-    // pagination setup
-    const resultsPerPage = 3
-    const totalResults = showrecipies.length
-
-    // pagination change control
+    const resultsPerPage = 3;
+    const totalResults = showrecipies.length;
+    const [currentPage, setCurrentPage] = useState(1);
+    // Calculate the indexes for the current page
+    const indexOfLastRecipe = currentPage * resultsPerPage;
+    const indexOfFirstRecipe = indexOfLastRecipe - resultsPerPage;
+    const currentRecipes = showrecipies.slice(indexOfFirstRecipe, indexOfLastRecipe);
+    const currentRecipeKeys = recipie_key.slice(indexOfFirstRecipe, indexOfLastRecipe);
+    
+    // Pagination change control
     function onPageChange(p) {
-        setPage(p)
+      setCurrentPage(p);
     }
-
-    // on page change, load new sliced data
-    // here you would make another server request for new data
+    
+    // On page change, load new sliced data
+    // Here you would make another server request for new data
     useEffect(() => {
-        if (showrecipies.length > 0) {
-            setData(showrecipies.slice((page - 1) * resultsPerPage, page * resultsPerPage));
-        }
-    }, [showrecipies, page])
-    // testing
-
+      if (showrecipies.length > 0) {
+        const newData = showrecipies.slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage);
+        setData(newData);
+      }
+    }, [showrecipies, currentPage]);
+    
+    
     const fetchUser = async () => {
         const withdrawRef = query(
             collection(db, `/Users/${selected_user_id_selection}/recipes`)
@@ -162,9 +168,7 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
                 <button onClick={() => { handleback(1) }} className="text-black py-2">
                     < BsFillArrowLeftCircleFill size={30} />
                 </button>
-                {/* <button onClick={update_user} className="focus:outline-none py-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5  mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
-                    Update
-                </button> */}
+           
             </div>
             <div className="grid grid-cols-1  xl:grid-cols-7 gap-4">
                 {/* 1st col */}
@@ -202,30 +206,34 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
                     {/* recpies */}
                     <h1 className='font-bold my-5'>My Recipies</h1>
                     <div className='pb-5'>
-                        {data.length > 0 ? (
-                            data.map((recipe, index) => (
-                                <div key={index}>
-                                    <Userrecpcomp recipe={recipe} selected_user_id_selection={selected_user_id_selection} kiey={index} recipie_key={recipie_key[index]} handel_recipe_selection={handel_recipe_selection} />
-                                </div>
-                            ))
-                        ) : (
-                            <p>No recipe found.</p>
-                        )}
+    {currentRecipes.length > 0 ? (
+      currentRecipes.map((recipe, index) => (
+        <div key={currentRecipeKeys[index]}>
+          <Userrecpcomp
+            recipe={recipe}
+            selected_user_id_selection={selected_user_id_selection}
+            selected_recipe_key={selected_recipe_key}
+            kiey={index}
+            recipie_key={currentRecipeKeys[index]}
+            handel_recipe_selection={handel_recipe_selection}
+          />
+        </div>
+      ))
+    ) : (
+      <p>No recipe found.</p>
+    )}
 
-                        {data.length > 0 ? (
-                            <TableFooter>
-                                <Pagination
-                                    totalResults={totalResults}
-                                    resultsPerPage={resultsPerPage}
-                                    label="Table navigation"
-                                    onChange={onPageChange}
-                                />
-                            </TableFooter>
-                        ) : (
-                            <p></p>
-                        )}
-
-                    </div>
+    {currentRecipes.length > 0 ? (
+      <TableFooter>
+        <Pagination
+          totalResults={totalResults}
+          resultsPerPage={resultsPerPage}
+          label="Table navigation"
+          onChange={onPageChange}
+        />
+      </TableFooter>
+    ) : null}
+  </div>
 
                 </div>
                 {/* 2nd col */}
@@ -239,7 +247,7 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
                                 <div style={{ width: '100%', }}>
                                 
                                 {(fatsValue !== "") && <CanvasJSChart options={options} />}
-                                {(fatsValue == "") && <CanvasJSChart options={options2} />}
+                                {(fatsValue === "") && <CanvasJSChart options={options2} />}
                                 </div>
                             </div>
                             <div className="flex justify-between my-1">

@@ -3,20 +3,41 @@ import { collection, getDocs, where, onSnapshot, deleteDoc, doc } from 'firebase
 import Swal from 'sweetalert2'
 import axios from 'axios';
 import recipeimg from '../../assets/img/recipieimg.png'
+import { db } from '../../firebase'
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from '@windmill/react-ui'
-const Recipiescomp = ({ recipe, recipie_key, kiey, handleDelete, handel_recipe_selection }) => {
+const Recipiescomp = ({ recipe, id,recipie_key, handel_recipe_selection }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
-
+  const handleDelete = async () => {
+    const userId = 'wpVk9j4I16REWmlCJkviVM0EjtX2';
+    const recipePath1 = `Users/${userId}/recipes/${recipie_key}`;
+    const recipePath2 = `recipes/${recipie_key}`;
+  
+    try {
+      // Delete recipe from first path
+      const recipeDocRef1 = doc(db, recipePath1);
+      await deleteDoc(recipeDocRef1);
+      console.log('Recipe deleted from path 1:', recipePath1);
+  
+      // Delete recipe from second path
+      const recipeDocRef2 = doc(db, recipePath2);
+      await deleteDoc(recipeDocRef2);
+      console.log('Recipe deleted from path 2:', recipePath2);
+      setIsModalOpen(false)
+      console.log('Recipe deleted successfully');
+      alert('Recipe deleted successfully');
+    
+    } catch (error) {
+      console.error('Error deleting recipe:', error);
+      alert('An error occurred while deleting the recipe');
+    }
+  };
   function openModal() {
     setIsModalOpen(true)
   }
-
   function closeModal() {
     setIsModalOpen(false)
   }
-
-
   return (
     <div className="my-5" style={{ background: "white" }} >
       <div className="py-5 px-5">
@@ -54,7 +75,7 @@ const Recipiescomp = ({ recipe, recipie_key, kiey, handleDelete, handel_recipe_s
           <div className='flex '>
 
 
-            <div><button className="mx-3 text-sm" style={{ color: "#00A7A1" }} onClick={() => handel_recipe_selection(recipe, kiey, recipie_key)}>Edit</button></div>
+            <div><button className="mx-3 text-sm" style={{ color: "#00A7A1" }} onClick={() => handel_recipe_selection(recipe,  recipie_key)}>Edit</button></div>
 
             <div>
               <button className="mx-2 text-sm" style={{ color: "#ED6366" }} onClick={openModal}  >Delete</button>
@@ -72,7 +93,7 @@ const Recipiescomp = ({ recipe, recipie_key, kiey, handleDelete, handel_recipe_s
                   </Button>
                 </div>
                 <div className="hidden sm:block">
-                  <button className="mx-2 text-sm" style={{ color: "#ED6366" }} onClick={() => handleDelete(recipie_key)}>Delete</button>
+                  <button className="mx-2 text-sm" style={{ color: "#ED6366" }} onClick={() => handleDelete(recipe.id)}>Delete</button>
                 </div>
                 <div className="block w-full sm:hidden">
                   <Button block size="large" layout="outline" onClick={closeModal}>
@@ -80,7 +101,7 @@ const Recipiescomp = ({ recipe, recipie_key, kiey, handleDelete, handel_recipe_s
                   </Button>
                 </div>
                 <div className="block w-full sm:hidden">
-                  <button className="mx-2 text-sm" style={{ color: "#ED6366" }} onClick={() => handleDelete(recipie_key)}>Delete</button>
+                  <button className="mx-2 text-sm" style={{ color: "#ED6366" }} onClick={() => handleDelete(recipe.id)}>Delete</button>
                 </div>
               </ModalFooter>
             </Modal>

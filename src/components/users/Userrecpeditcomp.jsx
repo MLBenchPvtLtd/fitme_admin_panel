@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import "firebase/database";
-import { db } from '../firebase'
+import { db } from '../../firebase'
 import { doc, updateDoc } from 'firebase/firestore'
-import img from '../assets/img/upload.png'
+import img from '../../assets/img/upload.png'
 import { BsFillArrowLeftCircleFill } from 'react-icons/bs';
-import { useHistory } from 'react-router-dom';
 const Hotels = [
     { value: 1, label: "Cucumber" },
     { value: 2, label: "Onion" },
@@ -108,7 +107,7 @@ const Hotels = [
     { value: 99, label: "Venison" }
 ];
 
-const Recipeimage = ({ selected_recipe, selected_user_id, selected_recipe_key, img_url, handlecancel, handleSubmit, handleImageChange, loading }) => {
+const Userrecpeditcomp = ({ selected_recipe, selected_user_id, selected_recipe_key, img_url, handlecancel, handleSubmit, handleImageChange, loading }) => {
 
     const [selectedOptions, setSelectedOptions] = useState(null);
     const [printdetails, setPrintdetails] = useState(selected_recipe);
@@ -117,7 +116,6 @@ const Recipeimage = ({ selected_recipe, selected_user_id, selected_recipe_key, i
         setSelectedOptions(Array.isArray(e) ? e.map((hotel) => hotel.label) : []);
     };
     useEffect(() => {
-       
     }, []);
 
 
@@ -137,32 +135,30 @@ const Recipeimage = ({ selected_recipe, selected_user_id, selected_recipe_key, i
         console.log(printdetails)
     };
 
+    const update_recipe = () => {
+        const recipeDocRef = doc(
+          db,
+          `/Users/${selected_user_id}/recipes/${selected_recipe_key}`
+        );
+      
+        const updatedDetails = {
+          ...printdetails,
+          img_url: img_url || printdetails.img_url // Retain the previous image if no new image is selected
+        };
+      
+        updateDoc(recipeDocRef, updatedDetails)
+          .then(() => {
+            console.log(updatedDetails, "details");
+            alert("Update successful"); // Show alert message
+            handlecancel(1); // Call handlecancel function
+          
+          })
+          .catch((error) => {
+            console.error("Error updating document: ", error);
+            alert("Update failed"); // Show alert message
+          });
+      };
 
-   
-
-const update_recipe = () => {
-  const recipeDocRef = doc(
-    db,
-    `/Users/wpVk9j4I16REWmlCJkviVM0EjtX2/recipes/${selected_recipe_key}`
-  );
-
-  const updatedDetails = {
-    ...printdetails,
-    img_url: img_url || printdetails.img_url // Retain the previous image if no new image is selected
-  };
-
-  updateDoc(recipeDocRef, updatedDetails)
-    .then(() => {
-      console.log(updatedDetails, "details");
-      alert("Update successful"); // Show alert message
-      handlecancel(1); // Call handlecancel function
-    
-    })
-    .catch((error) => {
-      console.error("Error updating document: ", error);
-      alert("Update failed"); // Show alert message
-    });
-};
     return (
         <>
             <div className=" py-5 items-end  w-11/12">
@@ -177,6 +173,7 @@ const update_recipe = () => {
 
 
                     <div className="mt-5 pb-1">
+                        
                         <label className="font-medium text-lg " htmlFor=""> Name of Recipe</label>
                     </div>
                     <input type="name" id="password" placeholder="Enter name of Recipe" required name="name" value={printdetails.name} onChange={handleChange} className=" px-3 py-2  mt-1 mb-2 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" />
@@ -218,16 +215,9 @@ const update_recipe = () => {
                         <label className="font-medium text-lg" htmlFor=""> Category</label>
 
                     </div>
-                    <select name="category" placeholder="Select" value={printdetails.category} required onChange={handleChange} id="Category" className="w-11/12 mb-2 px-3 py-2 mt-1 mb-3 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400">
-                        <option selected ></option>
-                        <option value="None"> None </option>
-                        <option value="Vegetarian">Vegetarian</option>
-                        <option value="Clean">Clean</option>
-                        <option value="Keto">Keto</option>
-                        <option value="Dairy">Dairy Free</option>
-                        <option value="Diabetic">Diabetic</option>
-                        <option value="Vegan">Vegan</option>
-                    </select>
+                    <input name="category" type="text" value={printdetails.category} onChange={handleChange} className=" w-11/12 mb-2 px-3 py-2 mt-1 mb-3 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
+
+
 
                 </div>
 
@@ -268,7 +258,20 @@ const update_recipe = () => {
                         </div>
                     </div>
 
-           
+                    {/* <h3 className="mt-6 font-medium text-2xl"> Food prefrences</h3>
+                    <div className="mt-2  ">
+                        <label className="text-sm" htmlFor=""> chooese prefrences</label>
+
+                    </div>
+                    <select name="prefrences" value={newrecipe.prefrences} onChange={handleChange} id="countries" className="w-11/12 px-3 py-1 my-1 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400">
+                        <option selected></option>
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                        <option value="FR">France</option>
+                        <option value="DE">Germany</option>
+                    </select>
+
+ */}
 
                     <div className="mt-4 pb-1 ">
                         <label className="font-medium text-lg" htmlFor=""> Description</label>
@@ -322,4 +325,5 @@ const update_recipe = () => {
     )
 }
 
-export default Recipeimage
+export default Userrecpeditcomp
+

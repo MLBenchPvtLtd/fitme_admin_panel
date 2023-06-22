@@ -15,7 +15,7 @@ const RecipeDetail = ({ selected_recipe, selected_user_id, selected_recipe_key, 
     const [img_url, setUrl] = useState(null);
 
     useEffect(() => {
-      console.log(selected_recipe,"recp")
+      console.log(selected_recipe_key,"selected_recipe_key")
     }, []);
 
     const handleImageChange = (e) => {
@@ -25,43 +25,32 @@ const RecipeDetail = ({ selected_recipe, selected_user_id, selected_recipe_key, 
          
         }
       };
-    //   const handleSubmit = () => {
-    //     console.log(image)
-    //     const imageRef = ref(storage, "image"+image.name);
-    //     uploadBytes(imageRef, image)
-    //       .then(() => {
-    //         getDownloadURL(imageRef)
-    //           .then((url) => {
-    //             setUrl(url);
-    //             console.log(url)
-    //           })
-    //           .catch((error) => {
-    //             console.log(error.message, "error getting the image url");
-    //           });
-    //         setImage(null);
-    //       })
-    //       .catch((error) => {
-    //         console.log(error.message);
-    //       });
-    //   };
+
+   
     
 
     const [loading, setLoading] = useState(false);
   
+
     const handleSubmit = () => {
+      if (!image) {
+        showAlert('Please select an image');
+        return;
+      }
+    
       setLoading(true);
       console.log(image);
       const storageRef = ref(storage, "images/" + image.name);
-  
+    
       uploadBytes(storageRef, image)
         .then(() => {
           getDownloadURL(storageRef)
             .then((url) => {
               setUrl(url);
               console.log(url);
-  
+    
               // Save the download URL to Firestore
-              const recipeDocRef = doc(db,  `/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes/${selected_recipe_key}`);
+              const recipeDocRef = doc(db, `/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes/${selected_recipe_key}`);
               setDoc(recipeDocRef, { img_url: url }, { merge: true })
                 .then(() => {
                   console.log('Image URL saved to Firestore');
@@ -87,7 +76,9 @@ const RecipeDetail = ({ selected_recipe, selected_user_id, selected_recipe_key, 
           showAlert('Error uploading the image');
         });
     };
-  
+
+
+
     const showAlert = (message) => {
       alert(message);
       // You can also use a custom alert component to display the message in a more styled way

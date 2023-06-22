@@ -42,15 +42,15 @@ function Dashboard() {
   const [data, setData] = useState([])
   const [userCount, setUserCount] = useState(0);
   const [recipies_count, set_recipies_count] = useState(0);
+  const [adminrecipies_count, set_admin_recipies_count] = useState(0);
   const [users, setUsers] = useState([])
   const [recipes, set_recipes] = useState([])
   const userCollectionRef = collection(db, "Users")
   const recipeCollectionRef = collection(db, "recipes")
+  const adminrecipeCollectionRef = collection(db, "/Users/wpVk9j4I16REWmlCJkviVM0EjtX2/recipes")
   const [recipesByMonth, setRecipesByMonth] = useState("");
   const [userByMonth, setUserByMonth] = useState("");
   const [recipesMonthName, setRecipesMonthName] = useState("");
-
-
 
   // pagination setup
   const resultsPerPage = 10
@@ -86,7 +86,12 @@ function Dashboard() {
     const dataLength = querySnapshot.size;
     set_recipies_count(dataLength)
   };
-
+  const getRecipesadmin = async () => {
+    const querySnapshot = await getDocs(adminrecipeCollectionRef);
+    const data = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    const dataLength = querySnapshot.size;
+    set_admin_recipies_count(dataLength)
+  };
   // sort array
 
   const fetchRecipesByMonth = async () => {
@@ -150,7 +155,6 @@ function Dashboard() {
     }
   };
 
-
   const fetchUsersByMonth = async () => {
     try {
       const recipesRef = collection(db, 'Users');
@@ -210,12 +214,10 @@ function Dashboard() {
     }
   };
 
-
-
   useEffect(() => {
     getUsers();
     getRecipes();
-
+    getRecipesadmin();
     fetchRecipesByMonth();
     fetchUsersByMonth();
 
@@ -250,12 +252,6 @@ function Dashboard() {
 
   };
 
-
-
-
-
-
-
   return (
     <>
       <PageTitle>Welcome Back </PageTitle>
@@ -284,7 +280,7 @@ function Dashboard() {
               <img className="mr-3" src={ingredients} alt="" />
             </InfoCard3>
 
-            <InfoCard4 title=" Admin Recipies" value="120">
+            <InfoCard4 title=" Admin Recipies" value={adminrecipies_count}>
               <img className="mr-3" src={Totalnutrients} alt="" />
             </InfoCard4>
           </div>

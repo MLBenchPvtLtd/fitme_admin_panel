@@ -11,7 +11,7 @@ const RecipesListController = ({ selected_user_id, handleback, }) => {
     //     console.log(kiey,"keyid")
     //   }, []);
   
-    const handel_recipe_selection = (recipe,kiey,recipie_key) => {
+    const handel_recipe_selection = (recipe,recipie_key) => {
         set_selected_recipe(recipe);
         set_selected_recipe_key(recipie_key)
         set_page_index(2)

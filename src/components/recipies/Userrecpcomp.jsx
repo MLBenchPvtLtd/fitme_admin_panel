@@ -5,22 +5,35 @@ import Swal from 'sweetalert2'
 import axios from 'axios';
 import { db } from '../../firebase'
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from '@windmill/react-ui'
-const Userrecpcomp = ({ recipe, recipie_key, kiey,selected_user_id_selection, handel_recipe_selection }) => {
-  const userCollectionRef = collection(db, 'Users', selected_user_id_selection, 'recipes')
-    const handleDelete = async  (id) => {
-        const recipeDocRef = doc(userCollectionRef, id);
+const Userrecpcomp = ({ recipe, recipie_key, kiey,selected_user_id_selection, handel_recipe_selection,selected_recipe_key }) => {
 
+
+   const handleDelete = async (id) => {
+
+        const recipePath1 = `Users/${selected_user_id_selection}/recipes/${id}`;
+        const recipePath2 = `recipes/${id}`;
+      
         try {
-            await deleteDoc(recipeDocRef);
-            console.log(id, 'idd');
-            alert('Recipe deleted successfully');
-            window.location.reload(); // Refresh the page
+          // Delete recipe from first path
+          const recipeDocRef1 = doc(db, recipePath1);
+          await deleteDoc(recipeDocRef1);
+          console.log('Recipe deleted from path 1:', recipePath1);
+      
+          // Delete recipe from second path
+          const recipeDocRef2 = doc(db, recipePath2);
+          await deleteDoc(recipeDocRef2);
+          console.log('Recipe deleted from path 2:', recipePath2);
+          setIsModalOpen(false)
+          console.log('Recipe deleted successfully');
+          alert('Recipe deleted successfully');
+          
+      
         } catch (error) {
-            console.error('Error deleting recipe:', error);
-            alert('An error occurred while deleting the recipe');
+          console.error('Error deleting recipe:', error);
+          alert('An error occurred while deleting the recipe');
         }
-    };
-
+      };
+     
 const [isModalOpen, setIsModalOpen] = useState(false)
 
 function openModal() {
@@ -31,41 +44,13 @@ function closeModal() {
   setIsModalOpen(false)
 }
 
-//   const delete_id = id;
-//   console.log(delete_id);
 
-//   Swal.fire({
-//     title: 'Are you sure?',
-//     text: "You won't be able to recover this data!",
-//     icon: 'warning',
-//     showCancelButton: true,
-//     confirmButtonColor: '#3085d6',
-//     cancelButtonColor: '#d33',
-//     confirmButtonText: 'Yes, delete it!',
-//   }).then((result) => {
-//     if (result.isConfirmed) {
-//       axios
-//         .post(`/app/recipies/${delete_id}`, {
-//           _token: '{{ csrf_token() }}',
-//           id: delete_id,
-          
-//         })
-//         .then((response) => {
-//           Swal.fire('Deleted!', 'recipie has been deleted.', 'success').then((result) => {
-//             window.location.href = '/app/recipies';
-//           });
-//         })
-//         .catch((error) => {
-//           console.error('Error deleting video:', error);
-//         });
-//     }
-//   });
-// };
   return (
     <div className="my-5" style={{ background: "white" }} >
       <div className="py-5 px-5">
 
         <div className="flex justify-between">
+   
           <div className="grid grid-1 xl:grid-cols-3 gap-4">
             <div><img style={{ width: "100%", minWidth: "150px", maxWidth: "136px", maxHeight: "140px", }} src={recipe.img_url} alt="" /></div>
             <div className="pl-5 xl:col-span-2">
