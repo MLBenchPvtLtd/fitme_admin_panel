@@ -254,6 +254,7 @@ function Dashboard() {
 
   return (
     <>
+    
       <PageTitle>Welcome Back </PageTitle>
       <p style={{ color: "#8E8E9B" }}>We’re glad you’re here, let’s get started.</p>
 

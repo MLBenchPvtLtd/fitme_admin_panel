@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import "firebase/database";
 import { db } from '../../firebase'
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc,writeBatch } from 'firebase/firestore'
 import img from '../../assets/img/upload.png'
 import { BsFillArrowLeftCircleFill } from 'react-icons/bs';
 const Hotels = [
@@ -118,14 +118,20 @@ const Userrecpeditcomp = ({ selected_recipe, selected_user_id, selected_recipe_k
     useEffect(() => {
     }, []);
 
-
     const handleIngredientsChange = (selectedOptions) => {
-        setSelectedOptions(selectedOptions);
-        setPrintdetails((prevRecipe) => ({
-            ...prevRecipe,
-            ingredients: selectedOptions,
+        const updatedOptions = [...selectedOptions];
+        setSelectedOptions(updatedOptions);
+        
+        const updatedIngredients = updatedOptions.map(option =>
+          typeof option === 'object' ? option.label : option
+        );
+        
+        setPrintdetails(prevRecipe => ({
+          ...prevRecipe,
+          ingredients: updatedIngredients,
         }));
-    };
+      };
+      
     const handleChange = (e) => {
         const value = e.target.value;
         setPrintdetails({
@@ -136,29 +142,41 @@ const Userrecpeditcomp = ({ selected_recipe, selected_user_id, selected_recipe_k
     };
 
     const update_recipe = () => {
+        const batch = writeBatch(db);
+      
         const recipeDocRef = doc(
           db,
           `/Users/${selected_user_id}/recipes/${selected_recipe_key}`
         );
+        const userRecipeDocRef = doc(db, `/recipes/${selected_recipe_key}`);
+      
+        const updatedIngredients = printdetails.ingredients.map(item =>
+          typeof item === 'object' ? item.label : item
+        );
       
         const updatedDetails = {
           ...printdetails,
-          img_url: img_url || printdetails.img_url // Retain the previous image if no new image is selected
+          img_url: img_url || printdetails.img_url, // Retain the previous image if no new image is selected
+          ingredients: updatedIngredients, // Update the ingredients with the string array
         };
       
-        updateDoc(recipeDocRef, updatedDetails)
+        batch.update(recipeDocRef, updatedDetails);
+        batch.update(userRecipeDocRef, updatedDetails);
+      
+        batch
+          .commit()
           .then(() => {
             console.log(updatedDetails, "details");
             alert("Update successful"); // Show alert message
             handlecancel(1); // Call handlecancel function
-          
           })
-          .catch((error) => {
-            console.error("Error updating document: ", error);
+          .catch(error => {
+            console.error("Error updating documents: ", error);
             alert("Update failed"); // Show alert message
           });
       };
-
+      
+      
     return (
         <>
             <div className=" py-5 items-end  w-11/12">
@@ -186,9 +204,10 @@ const Userrecpeditcomp = ({ selected_recipe, selected_user_id, selected_recipe_k
                                 className="py-2"
                                 options={Hotels}
                                 onChange={handleIngredientsChange}
-                                value={printdetails.ingredients}
+                                value={printdetails.ingredients.map(item => (typeof item === 'object' ? item : { label: item }))}
                                 isMulti
                                 isSearchable // Enable search functionality
+                                closeMenuOnSelect={false} // Keep the dropdown open after selecting an option
                             />
                         </div>
                     </div>

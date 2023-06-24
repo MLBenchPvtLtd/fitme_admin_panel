@@ -54,22 +54,22 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
     const indexOfFirstRecipe = indexOfLastRecipe - resultsPerPage;
     const currentRecipes = showrecipies.slice(indexOfFirstRecipe, indexOfLastRecipe);
     const currentRecipeKeys = recipie_key.slice(indexOfFirstRecipe, indexOfLastRecipe);
-    
+
     // Pagination change control
     function onPageChange(p) {
-      setCurrentPage(p);
+        setCurrentPage(p);
     }
-    
+
     // On page change, load new sliced data
     // Here you would make another server request for new data
     useEffect(() => {
-      if (showrecipies.length > 0) {
-        const newData = showrecipies.slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage);
-        setData(newData);
-      }
+        if (showrecipies.length > 0) {
+            const newData = showrecipies.slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage);
+            setData(newData);
+        }
     }, [showrecipies, currentPage]);
-    
-    
+
+
     const fetchUser = async () => {
         const withdrawRef = query(
             collection(db, `/Users/${selected_user_id_selection}/recipes`)
@@ -168,7 +168,7 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
                 <button onClick={() => { handleback(1) }} className="text-black py-2">
                     < BsFillArrowLeftCircleFill size={30} />
                 </button>
-           
+
             </div>
             <div className="grid grid-cols-1  xl:grid-cols-7 gap-4">
                 {/* 1st col */}
@@ -206,34 +206,34 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
                     {/* recpies */}
                     <h1 className='font-bold my-5'>My Recipies</h1>
                     <div className='pb-5'>
-    {currentRecipes.length > 0 ? (
-      currentRecipes.map((recipe, index) => (
-        <div key={currentRecipeKeys[index]}>
-          <Userrecpcomp
-            recipe={recipe}
-            selected_user_id_selection={selected_user_id_selection}
-            selected_recipe_key={selected_recipe_key}
-            kiey={index}
-            recipie_key={currentRecipeKeys[index]}
-            handel_recipe_selection={handel_recipe_selection}
-          />
-        </div>
-      ))
-    ) : (
-      <p>No recipe found.</p>
-    )}
+                        {currentRecipes.length > 0 ? (
+                            currentRecipes.map((recipe, index) => (
+                                <div key={currentRecipeKeys[index]}>
+                                    <Userrecpcomp
+                                        recipe={recipe}
+                                        selected_user_id_selection={selected_user_id_selection}
+                                        selected_recipe_key={selected_recipe_key}
+                                        kiey={index}
+                                        recipie_key={currentRecipeKeys[index]}
+                                        handel_recipe_selection={handel_recipe_selection}
+                                    />
+                                </div>
+                            ))
+                        ) : (
+                            <p>No recipe found.</p>
+                        )}
 
-    {currentRecipes.length > 0 ? (
-      <TableFooter>
-        <Pagination
-          totalResults={totalResults}
-          resultsPerPage={resultsPerPage}
-          label="Table navigation"
-          onChange={onPageChange}
-        />
-      </TableFooter>
-    ) : null}
-  </div>
+                        {currentRecipes.length > 0 ? (
+                            <TableFooter>
+                                <Pagination
+                                    totalResults={totalResults}
+                                    resultsPerPage={resultsPerPage}
+                                    label="Table navigation"
+                                    onChange={onPageChange}
+                                />
+                            </TableFooter>
+                        ) : null}
+                    </div>
 
                 </div>
                 {/* 2nd col */}
@@ -245,9 +245,9 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
                             <div className="">
 
                                 <div style={{ width: '100%', }}>
-                                
-                                {(fatsValue !== "") && <CanvasJSChart options={options} />}
-                                {(fatsValue === "") && <CanvasJSChart options={options2} />}
+
+                                    {(fatsValue !== "") && <CanvasJSChart options={options} />}
+                                    {(fatsValue === "") && <CanvasJSChart options={options2} />}
                                 </div>
                             </div>
                             <div className="flex justify-between my-1">

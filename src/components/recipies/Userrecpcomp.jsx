@@ -58,7 +58,7 @@ function closeModal() {
               {recipe.ingredients && (
                 <ul className="flex">
                   {recipe.ingredients.map((ingredient, index) => (
-                    <p className="font-normal text-xs my-1" key={index} style={{ color: "#747474" }}>{ingredient.label}, </p>
+                    <p className="font-normal text-xs my-1" key={index} style={{ color: "#747474" }}>{ingredient}, </p>
                   ))}
                 </ul>
               )}

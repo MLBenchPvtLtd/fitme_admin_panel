@@ -14,36 +14,40 @@ const Imageurl = ({ handleImageChange, handleChange, newrecipe, selected_user_id
     const add_recipe = async (e) => {
         e.preventDefault();
         const uuid = uuidv4();
-      
+
         if (img_url === null || !isFormValid()) {
-          alert('Please select an image.');
+            alert('Please select an image.');
         } else {
-          newrecipe.img_url = img_url;
-      
-          const userId = 'wpVk9j4I16REWmlCJkviVM0EjtX2';
-          const recipePath1 = `Users/${userId}/recipes/${uuid}`;
-          const recipePath2 = `recipes/${uuid}`;
-      
-          try {
-            // Send recipe to first path
-            const recipeDocRef1 = doc(db, recipePath1);
-            await setDoc(recipeDocRef1, newrecipe);
-            console.log('Recipe added to path 1 successfully:', recipePath1);
-      
-            // Send recipe to second path
-            const recipeDocRef2 = doc(db, recipePath2);
-            await setDoc(recipeDocRef2, newrecipe);
-            console.log('Recipe added to path 2 successfully:', recipePath2);
-      
-            console.log(img_url);
-      
-            // Navigate to the Fitmerecipe component
-            history.push('/app/recipies');
-          } catch (error) {
-            console.error('Error adding recipe:', error);
-          }
+            newrecipe.img_url = img_url;
+
+            const userId = 'wpVk9j4I16REWmlCJkviVM0EjtX2';
+            const recipePath1 = `Users/${userId}/recipes/${uuid}`;
+            const recipePath2 = `recipes/${uuid}`;
+
+            var strIng = newrecipe.ingredients.map(item => item.label);
+
+
+            try {
+                newrecipe.ingredients = strIng; // Update ingredients with the string array
+                // Send recipe to first path
+                const recipeDocRef1 = doc(db, recipePath1);
+                await setDoc(recipeDocRef1, newrecipe);
+                console.log('Recipe added to path 1 successfully:', recipePath1);
+
+                // Send recipe to second path
+                const recipeDocRef2 = doc(db, recipePath2);
+                await setDoc(recipeDocRef2, newrecipe);
+                console.log('Recipe added to path 2 successfully:', recipePath2);
+
+                console.log(img_url);
+
+                // Navigate to the Fitmerecipe component
+                history.push('/app/recipies');
+            } catch (error) {
+                console.error('Error adding recipe:', error);
+            }
         }
-      };
+    };
     const isFormValid = () => {
         return (
             newrecipe.name !== "" &&
@@ -87,7 +91,7 @@ const Imageurl = ({ handleImageChange, handleChange, newrecipe, selected_user_id
                                     onChange={handleIngredientsChange}
                                     value={newrecipe.ingredients}
                                     isMulti
-                                    isSearchable // Enable search functionality
+                                    isSearchable
                                 />
                             </div>
                         </div>
@@ -109,8 +113,8 @@ const Imageurl = ({ handleImageChange, handleChange, newrecipe, selected_user_id
 
                         </div>
                         <input name="makeTime" value={newrecipe.makeTime} onChange={handleChange} required type="text" min="0" className=" w-11/12 mb-2 px-3 py-2 mt-1 mb-3 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" placeholder="" />
-                      
-                      
+
+
                         <div className="mt-4 pb-1 ">
                             <label className="font-medium text-lg" htmlFor=""> Category</label>
 

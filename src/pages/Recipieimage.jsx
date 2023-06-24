@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import "firebase/database";
 import { db } from '../firebase'
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc, writeBatch } from 'firebase/firestore'
 import img from '../assets/img/upload.png'
 import { BsFillArrowLeftCircleFill } from 'react-icons/bs';
 import { useHistory } from 'react-router-dom';
@@ -117,7 +117,7 @@ const Recipeimage = ({ selected_recipe, selected_user_id, selected_recipe_key, i
         setSelectedOptions(Array.isArray(e) ? e.map((hotel) => hotel.label) : []);
     };
     useEffect(() => {
-       
+
     }, []);
 
 
@@ -138,31 +138,49 @@ const Recipeimage = ({ selected_recipe, selected_user_id, selected_recipe_key, i
     };
 
 
-   
 
-const update_recipe = () => {
-  const recipeDocRef = doc(
-    db,
-    `/Users/wpVk9j4I16REWmlCJkviVM0EjtX2/recipes/${selected_recipe_key}`
-  );
 
-  const updatedDetails = {
-    ...printdetails,
-    img_url: img_url || printdetails.img_url // Retain the previous image if no new image is selected
-  };
+    const update_recipe = () => {
+        const batch = writeBatch(db);
 
-  updateDoc(recipeDocRef, updatedDetails)
-    .then(() => {
-      console.log(updatedDetails, "details");
-      alert("Update successful"); // Show alert message
-      handlecancel(1); // Call handlecancel function
-    
-    })
-    .catch((error) => {
-      console.error("Error updating document: ", error);
-      alert("Update failed"); // Show alert message
-    });
-};
+
+        const recipeDocRef = doc(
+            db,
+            `/Users/wpVk9j4I16REWmlCJkviVM0EjtX2/recipes/${selected_recipe_key}`
+        );
+
+        const userRecipeDocRef = doc(
+            db,
+            `/recipes/${selected_recipe_key}`
+        );
+
+        const updatedIngredients = printdetails.ingredients.map(item =>
+            typeof item === 'object' ? item.label : item
+        );
+
+        const updatedDetails = {
+            ...printdetails,
+            img_url: img_url || printdetails.img_url, // Retain the previous image if no new image is selected
+            ingredients: updatedIngredients, // Update the ingredients with the string array
+        };
+
+        batch.update(recipeDocRef, updatedDetails);
+        batch.update(userRecipeDocRef, updatedDetails);
+
+        batch
+            .commit()
+            .then(() => {
+                console.log(updatedDetails, "details");
+                alert("Update successful"); // Show alert message
+                handlecancel(1); // Call handlecancel function
+            })
+            .catch(error => {
+                console.error("Error updating documents: ", error);
+                alert("Update failed"); // Show alert message
+            });
+    };
+
+
     return (
         <>
             <div className=" py-5 items-end  w-11/12">
@@ -184,15 +202,18 @@ const update_recipe = () => {
                     <h3 className="mt-6  mb-4 font-medium text-lg "> Ingredients of Recipe</h3>
                     <div className="flex w-11/12 p5-1 mb-2 flex-wrap items-center lg:justify-between justify-center">
                         <div className="w-full py-2">
+
                             <Select
                                 name="ingredients"
                                 className="py-2"
                                 options={Hotels}
                                 onChange={handleIngredientsChange}
-                                value={printdetails.ingredients}
-                                isMulti
-                                isSearchable // Enable search functionality
+                                value={printdetails.ingredients.map(item => (typeof item === 'object' ? item : { label: item }))} isMulti
+                                isSearchable
+                                closeMenuOnSelect={false}
                             />
+
+
                         </div>
                     </div>
 
@@ -268,7 +289,7 @@ const update_recipe = () => {
                         </div>
                     </div>
 
-           
+
 
                     <div className="mt-4 pb-1 ">
                         <label className="font-medium text-lg" htmlFor=""> Description</label>

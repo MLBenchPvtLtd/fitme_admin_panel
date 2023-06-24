@@ -46,7 +46,7 @@ const Recipiescomp = ({ recipe, id,recipie_key, handel_recipe_selection }) => {
           <div className="grid grid-1 xl:grid-cols-3 gap-4">
             <div>
 
-              {(recipe.image_url !== '') && <img style={{ width: "100%", minWidth: "150px", maxWidth: "136px", maxHeight: "140px", }} src={recipe.img_url} alt="" />}
+              {(recipe.image_url !== '') && <img style={{ width: "100%", minWidth: "150px", maxWidth: "150px", maxHeight: "140px", }} src={recipe.img_url} alt="" />}
               {(recipe.image_url === '') && <img className='h-10  w-10 mr-2 rounded-full' src={recipeimg} alt="" />}
             </div>
             <div className="pl-5 xl:col-span-2">
@@ -54,7 +54,7 @@ const Recipiescomp = ({ recipe, id,recipie_key, handel_recipe_selection }) => {
               {recipe.ingredients && (
                 <ul className="flex">
                   {recipe.ingredients.map((ingredient, index) => (
-                    <p className="font-normal text-xs my-1" key={index} style={{ color: "#747474" }}>{ingredient.label},</p>
+                    <p className="font-normal text-xs my-1" key={index} style={{ color: "#747474" }}>{ingredient},</p>
                   ))}
                 </ul>
               )}

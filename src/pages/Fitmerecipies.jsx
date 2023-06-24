@@ -64,12 +64,12 @@ const Fitmerecipies = ({ handel_recipe_selection }) => {
   const indexOfFirstRecipe = indexOfLastRecipe - resultsPerPage;
   const currentRecipes = showrecipies.slice(indexOfFirstRecipe, indexOfLastRecipe);
   const currentRecipeKeys = recipie_key.slice(indexOfFirstRecipe, indexOfLastRecipe);
-  
+
   // Pagination change control
   function onPageChange(p) {
     setCurrentPage(p);
   }
-  
+
   // On page change, load new sliced data
   // Here you would make another server request for new data
   useEffect(() => {
@@ -87,33 +87,33 @@ const Fitmerecipies = ({ handel_recipe_selection }) => {
   return (
 
     <div>
-     
-      <div className='pb-5'>
-    {currentRecipes.length > 0 ? (
-      currentRecipes.map((recipe, index) => (
-        <div key={currentRecipeKeys[index]}>
-       <Recipiescomp
-          recipe={recipe}
-          recipie_key={currentRecipeKeys[index]}
-          handel_recipe_selection={handel_recipe_selection}
-        />
-        </div>
-      ))
-    ) : (
-      <p>No recipe found.</p>
-    )}
 
-    {currentRecipes.length > 0 ? (
-      <TableFooter>
-        <Pagination
-          totalResults={totalResults}
-          resultsPerPage={resultsPerPage}
-          label="Table navigation"
-          onChange={onPageChange}
-        />
-      </TableFooter>
-    ) : null}
-  </div>
+      <div className='pb-5'>
+        {currentRecipes.length > 0 ? (
+          currentRecipes.map((recipe, index) => (
+            <div key={currentRecipeKeys[index]}>
+              <Recipiescomp
+                recipe={recipe}
+                recipie_key={currentRecipeKeys[index]}
+                handel_recipe_selection={handel_recipe_selection}
+              />
+            </div>
+          ))
+        ) : (
+          <p>No recipe found.</p>
+        )}
+
+        {currentRecipes.length > 0 ? (
+          <TableFooter>
+            <Pagination
+              totalResults={totalResults}
+              resultsPerPage={resultsPerPage}
+              label="Table navigation"
+              onChange={onPageChange}
+            />
+          </TableFooter>
+        ) : null}
+      </div>
     </div>
 
   )
