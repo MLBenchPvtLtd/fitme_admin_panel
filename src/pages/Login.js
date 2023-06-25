@@ -57,7 +57,8 @@ function Login() {
          
             <div className="w-full">
             <h1 className='text-6xl font-bold' style={{marginBottom:"10%",color:"#009D97",fontFamily:"'nunito', 'sans-serif'"}}>FitMe</h1>
-              <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-700" >Login</h1>
+            <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-700 font-inter">Login</h1>
+
               <form onSubmit={onLogin}>
                 <Label>
                   <span className='font-semibold'>Email</span>

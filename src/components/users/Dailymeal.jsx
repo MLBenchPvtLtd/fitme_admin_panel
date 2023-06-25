@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import imgbreakfast from '../../assets/img/breakfast.png'
 import 'firebase/database';
 import Breakfast from '../../components/Dailymeal/Breakfast'
+import Lunch from '../../components/Dailymeal/Lunch'
+import Dinner from '../../components/Dailymeal/Dinner'
+import Snacks from '../../components/Dailymeal/Snacks'
 import { dbase } from '../../firebase'
 import { getDatabase, ref, query, get, child } from 'firebase/database';
 
@@ -19,13 +22,13 @@ const Dailymeal = ({ selected_user_id_selection }) => {
         const day = String(currentDate.getDate()).padStart(2, '0'); // Padding with '0' if necessary
         const year = currentDate.getFullYear();
         const formattedDate = `${month}-${day}-${year}`;
-        
+
         console.log(formattedDate); // Log the current date as a string in the format "06-24-2023"
-        
-        const breakfastPath = `/meal_planner/${selected_user_id_selection}/Breakfast/${formattedDate}/`;
-        const lunchPath = `/meal_planner/${selected_user_id_selection}/Lunch/${formattedDate}/`;
-        const dinnerPath = `/meal_planner/${selected_user_id_selection}/Dinner/${formattedDate}/`;
-        const snacksPath = `/meal_planner/${selected_user_id_selection}/Snacks/${formattedDate}/`;
+
+        const breakfastPath = `/meal_planner/${selected_user_id_selection}/breakfast/${formattedDate}/`;
+        const lunchPath = `/meal_planner/${selected_user_id_selection}/lunch/${formattedDate}/`;
+        const dinnerPath = `/meal_planner/${selected_user_id_selection}/dinner/${formattedDate}/`;
+        const snacksPath = `/meal_planner/${selected_user_id_selection}/snack-Other/${formattedDate}/`;
 
         const db = getDatabase();
 
@@ -87,14 +90,13 @@ const Dailymeal = ({ selected_user_id_selection }) => {
     }, []);
     return (
         <div>
-
             <div className="rounded-lg mb-4" style={{ backgroundColor: "white" }}>
                 <div className="py-5 px-5 ">
                     <div className="flex justify-between"> <h2 className="mb-3">Breakfast</h2> <p className="text-xs mt-1" style={{ color: "#D8808C" }}>Total kcal</p></div>
                     <div className="flex flex-wrap  gap-4">
                         {Object.keys(breakfastData).length > 0 ? (
                             Object.keys(breakfastData).map((key) => (
-                                <div key={key} className="flex-auto" style={{maxWidth:"250px"}}>
+                                <div key={key} className="flex-auto" style={{ maxWidth: "250px" }}>
                                     <Breakfast breakfast={breakfastData[key]} />
                                 </div>
                             ))
@@ -108,17 +110,11 @@ const Dailymeal = ({ selected_user_id_selection }) => {
             <div className="rounded-lg mb-4" style={{ backgroundColor: "white" }}>
                 <div className="py-5 px-5 ">
                     <div className="flex justify-between"> <h2 className="mb-3">Lunch</h2> <p className="text-xs mt-1" style={{ color: "#6EC1C1" }}>Total kcal</p></div>
-                    <div className="grid grid-cols-2 gap-4">
-
+                    <div className="flex flex-wrap  gap-4">
                         {Object.keys(lunchData).length > 0 ? (
                             Object.keys(lunchData).map((key) => (
-                                <div key={key}>
-                                    <div className="text-center rounded-lg " style={{ backgroundColor: "#CFEEEE", alignItems: "center" }}>
-                                        <p className="flex ">
-                                            <div style={{ minWidth: "10%" }}> <img className="px-2 py-2 h-10  w-10 rounded-full" src={lunchData.img_url} alt="" /></div>
-                                            <p className='text-xs px-2 pt-3'> {lunchData.name}</p>
-                                        </p>
-                                    </div>
+                                <div key={key} className="flex-auto" style={{ maxWidth: "250px" }}>
+                                    <Lunch lunchData={lunchData[key]} />
                                 </div>
                             ))
                         ) : (
@@ -131,46 +127,34 @@ const Dailymeal = ({ selected_user_id_selection }) => {
             <div className="rounded-lg mb-4" style={{ backgroundColor: "white" }}>
                 <div className="py-5 px-5 ">
                     <div className="flex justify-between"> <h2 className="mb-3">Dinner</h2> <p className="text-xs mt-1 " style={{ color: "#BBAD92" }}>Total kcal</p></div>
-                    <div className="grid grid-cols-2 gap-4">
-
-                        {Object.keys(snacksData).length > 0 ? (
-                            Object.keys(snacksData).map((key) => (
-                                <div key={key}>
-                                    <div className="text-center rounded-lg " style={{ backgroundColor: "#E9E1D2", alignItems: "center" }}>
-                                        <p className="flex ">
-                                            <div style={{ minWidth: "10%" }}> <img className="px-2 py-2" src={snacksData.img_url} alt="" /></div>
-                                            <p className='text-xs pt-3 px-2'> {snacksData.name}</p>
-                                        </p>
-                                    </div>
+                    <div className="flex flex-wrap  gap-4">
+                        {Object.keys(dinnerData).length > 0 ? (
+                            Object.keys(dinnerData).map((key) => (
+                                <div key={key} className="flex-auto" style={{ maxWidth: "250px" }}>
+                                    <Dinner dinnerData={dinnerData[key]} />
                                 </div>
                             ))
                         ) : (
                             <div>No meal</div>
                         )}
                     </div>
+                    
                 </div>
             </div>
             {/* snack */}
             <div className="rounded-lg mb-4" style={{ backgroundColor: "white" }}>
                 <div className="py-5 px-5 ">
                     <div className="flex justify-between "> <h2 className="mb-3">Snack</h2> <p className="text-xs mt-1" style={{ color: "#939CAD" }}>Total kcal</p></div>
-                    <div className="grid grid-cols-2 gap-4">
-
-                        {Object.keys(dinnerData).length > 0 ? (
-                            Object.keys(dinnerData).map((key) => (
-                                <div key={key}>
-                                    <div className="text-center rounded-lg " style={{ backgroundColor: "#CFD5E2", alignItems: "center" }}>
-                                        <p className="flex ">
-                                            <div style={{ minWidth: "10%" }}> <img className="px-2 py-2" src={dinnerData.img_url} alt="" /></div>
-                                            <p className='text-xs px-2 pt-3'>  {dinnerData.name}t</p>
-                                        </p>
-                                    </div>
+                    <div className="flex flex-wrap  gap-4">
+                    {Object.keys(snacksData).length > 0 ? (
+                            Object.keys(snacksData).map((key) => (
+                                <div key={key} className="flex-auto" style={{ maxWidth: "250px" }}>
+                                    <Snacks snacksData={snacksData[key]} />
                                 </div>
                             ))
                         ) : (
                             <div>No meal</div>
                         )}
-
                     </div>
                 </div>
             </div>

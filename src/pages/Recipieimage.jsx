@@ -116,9 +116,6 @@ const Recipeimage = ({ selected_recipe, selected_user_id, selected_recipe_key, i
     const setHandle = (e) => {
         setSelectedOptions(Array.isArray(e) ? e.map((hotel) => hotel.label) : []);
     };
-    useEffect(() => {
-
-    }, []);
 
 
     const handleIngredientsChange = (selectedOptions) => {
@@ -142,44 +139,46 @@ const Recipeimage = ({ selected_recipe, selected_user_id, selected_recipe_key, i
 
     const update_recipe = () => {
         const batch = writeBatch(db);
-
-
+      
         const recipeDocRef = doc(
-            db,
-            `/Users/wpVk9j4I16REWmlCJkviVM0EjtX2/recipes/${selected_recipe_key}`
+          db,
+          `/Users/wpVk9j4I16REWmlCJkviVM0EjtX2/recipes/${selected_recipe_key}`
         );
-
-        const userRecipeDocRef = doc(
-            db,
-            `/recipes/${selected_recipe_key}`
-        );
-
-        const updatedIngredients = printdetails.ingredients.map(item =>
+      
+        const userRecipeDocRef = doc(db, `/recipes/${selected_recipe_key}`);
+      
+        let updatedIngredients = [];
+        if (printdetails.ingredients && Array.isArray(printdetails.ingredients)) {
+          updatedIngredients = printdetails.ingredients.map((item) =>
             typeof item === 'object' ? item.label : item
-        );
-
+          );
+        }
+      
         const updatedDetails = {
-            ...printdetails,
-            img_url: img_url || printdetails.img_url, // Retain the previous image if no new image is selected
-            ingredients: updatedIngredients, // Update the ingredients with the string array
+          ...printdetails,
+          img_url: img_url || printdetails.img_url,
+          ingredients: updatedIngredients,
         };
-
+      
         batch.update(recipeDocRef, updatedDetails);
         batch.update(userRecipeDocRef, updatedDetails);
-
+      
         batch
-            .commit()
-            .then(() => {
-                console.log(updatedDetails, "details");
-                alert("Update successful"); // Show alert message
-                handlecancel(1); // Call handlecancel function
-            })
-            .catch(error => {
-                console.error("Error updating documents: ", error);
-                alert("Update failed"); // Show alert message
-            });
-    };
-
+          .commit()
+          .then(() => {
+            console.log(updatedDetails, "details");
+            alert("Update successful");
+            handlecancel(1);
+          })
+          .catch((error) => {
+            console.error("Error updating documents: ", error);
+            alert("Update failed");
+          });
+      };
+      
+      useEffect(() => {
+  
+    }, []);
 
     return (
         <>
@@ -208,9 +207,16 @@ const Recipeimage = ({ selected_recipe, selected_user_id, selected_recipe_key, i
                                 className="py-2"
                                 options={Hotels}
                                 onChange={handleIngredientsChange}
-                                value={printdetails.ingredients.map(item => (typeof item === 'object' ? item : { label: item }))} isMulti
-                                isSearchable
-                                closeMenuOnSelect={false}
+                                value={
+                                    printdetails.ingredients?.length > 0
+                                        ? printdetails.ingredients.map((item) =>
+                                            typeof item === 'object' ? item : { label: item }
+                                        )
+                                        : null // Provide null as the default value when printdetails.ingredients is undefined or empty
+                                }
+                                isMulti
+                                isSearchable // Enable search functionality
+                                closeMenuOnSelect={false} // Keep the dropdown open after selecting an option
                             />
 
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import "firebase/database";
 import { db } from '../../firebase'
-import { doc, updateDoc,writeBatch } from 'firebase/firestore'
+import { doc, updateDoc, writeBatch } from 'firebase/firestore'
 import img from '../../assets/img/upload.png'
 import { BsFillArrowLeftCircleFill } from 'react-icons/bs';
 const Hotels = [
@@ -121,17 +121,17 @@ const Userrecpeditcomp = ({ selected_recipe, selected_user_id, selected_recipe_k
     const handleIngredientsChange = (selectedOptions) => {
         const updatedOptions = [...selectedOptions];
         setSelectedOptions(updatedOptions);
-        
+
         const updatedIngredients = updatedOptions.map(option =>
-          typeof option === 'object' ? option.label : option
+            typeof option === 'object' ? option.label : option
         );
-        
+
         setPrintdetails(prevRecipe => ({
-          ...prevRecipe,
-          ingredients: updatedIngredients,
+            ...prevRecipe,
+            ingredients: updatedIngredients,
         }));
-      };
-      
+    };
+
     const handleChange = (e) => {
         const value = e.target.value;
         setPrintdetails({
@@ -141,23 +141,29 @@ const Userrecpeditcomp = ({ selected_recipe, selected_user_id, selected_recipe_k
         console.log(printdetails)
     };
 
+
+
     const update_recipe = () => {
         const batch = writeBatch(db);
       
+      
         const recipeDocRef = doc(
-          db,
-          `/Users/${selected_user_id}/recipes/${selected_recipe_key}`
+            db,
+            `/Users/${selected_user_id}/recipes/${selected_recipe_key}`
         );
         const userRecipeDocRef = doc(db, `/recipes/${selected_recipe_key}`);
       
-        const updatedIngredients = printdetails.ingredients.map(item =>
-          typeof item === 'object' ? item.label : item
-        );
+        let updatedIngredients = [];
+        if (printdetails.ingredients && Array.isArray(printdetails.ingredients)) {
+          updatedIngredients = printdetails.ingredients.map((item) =>
+            typeof item === 'object' ? item.label : item
+          );
+        }
       
         const updatedDetails = {
           ...printdetails,
-          img_url: img_url || printdetails.img_url, // Retain the previous image if no new image is selected
-          ingredients: updatedIngredients, // Update the ingredients with the string array
+          img_url: img_url || printdetails.img_url,
+          ingredients: updatedIngredients,
         };
       
         batch.update(recipeDocRef, updatedDetails);
@@ -167,16 +173,14 @@ const Userrecpeditcomp = ({ selected_recipe, selected_user_id, selected_recipe_k
           .commit()
           .then(() => {
             console.log(updatedDetails, "details");
-            alert("Update successful"); // Show alert message
-            handlecancel(1); // Call handlecancel function
+            alert("Update successful");
+            handlecancel(1);
           })
-          .catch(error => {
+          .catch((error) => {
             console.error("Error updating documents: ", error);
-            alert("Update failed"); // Show alert message
+            alert("Update failed");
           });
       };
-      
-      
     return (
         <>
             <div className=" py-5 items-end  w-11/12">
@@ -191,7 +195,7 @@ const Userrecpeditcomp = ({ selected_recipe, selected_user_id, selected_recipe_k
 
 
                     <div className="mt-5 pb-1">
-                        
+
                         <label className="font-medium text-lg " htmlFor=""> Name of Recipe</label>
                     </div>
                     <input type="name" id="password" placeholder="Enter name of Recipe" required name="name" value={printdetails.name} onChange={handleChange} className=" px-3 py-2  mt-1 mb-2 border-2 w-11/12 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400" />
@@ -204,11 +208,19 @@ const Userrecpeditcomp = ({ selected_recipe, selected_user_id, selected_recipe_k
                                 className="py-2"
                                 options={Hotels}
                                 onChange={handleIngredientsChange}
-                                value={printdetails.ingredients.map(item => (typeof item === 'object' ? item : { label: item }))}
+                                value={
+                                    printdetails.ingredients?.length > 0
+                                        ? printdetails.ingredients.map((item) =>
+                                            typeof item === 'object' ? item : { label: item }
+                                        )
+                                        : null // Provide null as the default value when printdetails.ingredients is undefined or empty
+                                }
                                 isMulti
                                 isSearchable // Enable search functionality
                                 closeMenuOnSelect={false} // Keep the dropdown open after selecting an option
                             />
+
+
                         </div>
                     </div>
 
@@ -277,20 +289,7 @@ const Userrecpeditcomp = ({ selected_recipe, selected_user_id, selected_recipe_k
                         </div>
                     </div>
 
-                    {/* <h3 className="mt-6 font-medium text-2xl"> Food prefrences</h3>
-                    <div className="mt-2  ">
-                        <label className="text-sm" htmlFor=""> chooese prefrences</label>
-
-                    </div>
-                    <select name="prefrences" value={newrecipe.prefrences} onChange={handleChange} id="countries" className="w-11/12 px-3 py-1 my-1 border-2 rounded focus:outline-none placeholder:text-blue-300 border-neutral-400">
-                        <option selected></option>
-                        <option value="US">United States</option>
-                        <option value="CA">Canada</option>
-                        <option value="FR">France</option>
-                        <option value="DE">Germany</option>
-                    </select>
-
- */}
+             
 
                     <div className="mt-4 pb-1 ">
                         <label className="font-medium text-lg" htmlFor=""> Description</label>
@@ -325,9 +324,6 @@ const Userrecpeditcomp = ({ selected_recipe, selected_user_id, selected_recipe_k
 
             <div className=" py-5 items-end justify-end text-right w-11/12">
 
-                {/* <button onClick={() => { handlecancel(1) }} className="text-white py-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                    Cancel
-                </button> */}
                 <button onClick={() => { handlecancel(1) }} className="text-white py-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                     Cancel
                 </button>

@@ -116,13 +116,21 @@ const Addrecipies = ({ selected_user_id,handlecancel }) => {
   const setHandle = (e) => {
     setSelectedOptions(Array.isArray(e) ? e.map((hotel) => hotel.label) : []);
 };
-  const handleImageChange = (e) => {
-    console.log(e)
-    if (e.target.files[0]) {
-      setImage(e.target.files[0]);
-     
+const [selectedImage, setSelectedImage] = useState(null);
+const [previousImageUrl, setPreviousImageUrl] = useState(null);
+
+const handleImageChange = (e) => {
+  if (e.target.files[0]) {
+    const newSelectedImage = e.target.files[0];
+    if (newSelectedImage === selectedImage) {
+      setSelectedImage(null);
+    } else {
+      setSelectedImage(newSelectedImage);
     }
-  };
+  }
+};
+
+
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -140,36 +148,41 @@ const handleIngredientsChange = (selectedOptions) => {
 };
 
   const [loading, setLoading] = useState(false);
+const handleSubmit = () => {
+  if (!selectedImage) {
+    alert('Image is not selected');
+    return;
+  }
 
-  const handleSubmit = () => {
-    if (image) {
-      setLoading(true); // Start the loading state
-      const storageRef = ref(storage, 'images/' + image.name);
-      uploadBytes(storageRef, image)
-        .then(() => {
-          getDownloadURL(storageRef)
-            .then((url) => {
-              setUrl(url);
-              console.log(url);
-              setImage(null);
-              setLoading(false); // Stop the loading state
-              alert('Image is uploaded');
-            })
-            .catch((error) => {
-              console.log(error.message, 'error getting the image URL');
-              setLoading(false); // Stop the loading state
-              alert('An error occurred while getting the image URL');
-            });
+  if (selectedImage === previousImageUrl) {
+    alert('Same image is already selected');
+    return;
+  }
+
+  setLoading(true);
+  const storageRef = ref(storage, 'images/' + selectedImage.name);
+  uploadBytes(storageRef, selectedImage)
+    .then(() => {
+      getDownloadURL(storageRef)
+        .then((url) => {
+          setUrl(url);
+          console.log(url);
+          setPreviousImageUrl(url); // Update the previous image URL
+          setLoading(false);
+          alert('Image is uploaded');
         })
         .catch((error) => {
-          console.log(error.message);
-          setLoading(false); // Stop the loading state
-          alert('An error occurred while uploading the image');
+          console.log(error.message, 'error getting the image URL');
+          setLoading(false);
+          alert('An error occurred while getting the image URL');
         });
-    } else {
-      alert('Image is not selected');
-    }
-  };
+    })
+    .catch((error) => {
+      console.log(error.message);
+      setLoading(false);
+      alert('An error occurred while uploading the image');
+    });
+};
 
   return (
     <>

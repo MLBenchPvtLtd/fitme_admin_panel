@@ -18,65 +18,99 @@ const RecipeDetail = ({ selected_recipe, selected_user_id, selected_recipe_key, 
       console.log(selected_recipe_key,"selected_recipe_key")
     }, []);
 
-    const handleImageChange = (e) => {
-        console.log(e)
-        if (e.target.files[0]) {
-          setImage(e.target.files[0]);
-         
-        }
-      };
+
 
    
     
 
     const [loading, setLoading] = useState(false);
-  
-
     const handleSubmit = () => {
-      if (!image) {
+      if (!image && !img_url) {
         showAlert('Please select an image');
         return;
       }
     
       setLoading(true);
       console.log(image);
-      const storageRef = ref(storage, "images/" + image.name);
+      const storageRef = ref(storage, 'images/' + (image ? image.name : ''));
     
-      uploadBytes(storageRef, image)
-        .then(() => {
-          getDownloadURL(storageRef)
-            .then((url) => {
-              setUrl(url);
-              console.log(url);
+      // Check if the new image has the same name as the existing image
+      if (img_url && image && img_url.includes(image.name)) {
+        // Save the download URL to Firestore without uploading the image
+        const recipeDocRef = doc(db, `/Users/wpVk9j4I16REWmlCJkviVM0EjtX2/recipes/${selected_recipe_key}`);
+        setDoc(recipeDocRef, { img_url: img_url }, { merge: true })
+          .then(() => {
+            console.log('Image URL updated in Firestore');
+            setLoading(false);
+            showAlert('Image updated successfully!');
+          })
+          .catch((error) => {
+            console.log(error.message, 'Error updating image URL in Firestore');
+            setLoading(false);
+            showAlert('Error updating image URL in Firestore');
+          });
+        setImage(null);
+      } else {
+        // Upload the new image
+        if (image) {
+          uploadBytes(storageRef, image)
+            .then(() => {
+              getDownloadURL(storageRef)
+                .then((url) => {
+                  setUrl(url);
+                  console.log(url);
     
-              // Save the download URL to Firestore
-              const recipeDocRef = doc(db, `/Users/s48rdKPmfuUcQLBxHpnP91U6MG02/recipes/${selected_recipe_key}`);
-              setDoc(recipeDocRef, { img_url: url }, { merge: true })
-                .then(() => {
-                  console.log('Image URL saved to Firestore');
-                  setLoading(false);
-                  showAlert('Image uploaded successfully!');
+                  // Save the download URL to Firestore
+                  const recipeDocRef = doc(db, `/Users/wpVk9j4I16REWmlCJkviVM0EjtX2/recipes/${selected_recipe_key}`);
+                  setDoc(recipeDocRef, { img_url: url }, { merge: true })
+                    .then(() => {
+                      console.log('Image uploaded successfully!');
+                      setLoading(false);
+                      showAlert('Image uploaded successfully!');
+                    })
+                    .catch((error) => {
+                      console.log(error.message, 'Error saving image URL to Firestore');
+                      setLoading(false);
+                      showAlert('Error saving image URL to Firestore');
+                    });
                 })
                 .catch((error) => {
-                  console.log(error.message, 'Error saving image URL to Firestore');
+                  console.log(error.message, 'Error getting the image URL');
                   setLoading(false);
-                  showAlert('Error saving image URL to Firestore');
+                  showAlert('Error getting the image URL');
                 });
+              setImage(null);
             })
             .catch((error) => {
-              console.log(error.message, "error getting the image URL");
+              console.log(error.message, 'Error uploading the image');
               setLoading(false);
-              showAlert('Error getting the image URL');
+              showAlert('Error uploading the image');
             });
-          setImage(null);
-        })
-        .catch((error) => {
-          console.log(error.message);
-          setLoading(false);
-          showAlert('Error uploading the image');
-        });
+        } else {
+          // Image is not selected, proceed with the existing image URL
+          const recipeDocRef = doc(db, `/Users/wpVk9j4I16REWmlCJkviVM0EjtX2/recipes/${selected_recipe_key}`);
+          setDoc(recipeDocRef, { img_url: img_url }, { merge: true })
+            .then(() => {
+              console.log('Image URL saved to Firestore');
+              setLoading(false);
+              showAlert('Image URL saved successfully!');
+            })
+            .catch((error) => {
+              console.log(error.message, 'Error saving image URL to Firestore');
+              setLoading(false);
+              showAlert('Error saving image URL to Firestore');
+            });
+        }
+      }
     };
-
+    
+    const handleImageChange = (e) => {
+      if (e.target.files[0]) {
+        const newImage = e.target.files[0];
+        setImage(newImage);
+      }
+    };
+    
 
 
     const showAlert = (message) => {

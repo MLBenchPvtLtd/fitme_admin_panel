@@ -99,13 +99,6 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
         }
     };
 
-
-    useEffect(() => {
-        fetchUser();
-        fetchUsergraph();
-
-    }, []);
-
     const sum = fatsValue.fats + fatsValue.protein + fatsValue.carbohydrates + fatsValue.calories;
     const graphtotal = sum.toString().slice(0, 5);
 
@@ -160,10 +153,38 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
             ]
         }]
     };
+    // calories left
+    const [calor, setCalories] = useState("");
+    const fetchCalories = async () => {
+        try {
+            const withdrawRef = query(collection(db, `/Users/${selected_user_id_selection}/goals`));
+
+            onSnapshot(withdrawRef, (querySnapshot) => {
+                const data = querySnapshot.docs.map((doc) => doc.data());
+                if (data.length > 0) {
+                    setCalories(data[0].calories);
+                } else {
+                    setText('No calorie');
+                }
+            });
+
+        } catch (error) {
+            console.error('Error fetching calories data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUser();
+        fetchUsergraph();
+        fetchCalories();
+    }, []);
+    var totalcalorie = calor * 5000;
+    var percentageFilled = (calor * 1000 / totalcalorie) * 100;
 
     return (
         <>
-
+            <div>
+            </div>
             <div className=" py-5 items-end  w-11/12">
                 <button onClick={() => { handleback(1) }} className="text-black py-2">
                     < BsFillArrowLeftCircleFill size={30} />
@@ -246,16 +267,23 @@ const Userdetail = ({ selected_user_object_selection, handleback, handel_recipe_
 
                                 <div style={{ width: '100%', }}>
 
-                                    {(fatsValue !== "") && <CanvasJSChart options={options} />}
-                                    {(fatsValue === "") && <CanvasJSChart options={options2} />}
+                                    {fatsValue !== "" ? (
+                                        <CanvasJSChart options={options} />
+                                    ) : (
+                                        <CanvasJSChart options={options2} />
+                                    )}
                                 </div>
                             </div>
                             <div className="flex justify-between my-1">
                                 <p className="font-medium">All Calories Left</p>
-                                <p className="text-base"><span className='font-medium'>595/</span> <span className='#8E8E8E'>1455</span></p>
+                                <p className="text-base"><span className='font-medium'>{calor * 1000}/</span> <span className='#8E8E8E'>{totalcalorie}</span></p>
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-5 ">
-                                <div class=" h-2.5 rounded-full" style={{ width: "45%", background: "#00A7A1" }}>.</div>
+
+                            <div className="w-full bg-gray-200 rounded-full h-2.5 mb-5">
+                                <div
+                                    className="h-2.5 rounded-full"
+                                    style={{ width: `${percentageFilled}%`, background: "#00A7A1" }}
+                                >.</div>
                             </div>
                         </div>
                     </div>
